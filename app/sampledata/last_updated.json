@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "city_name": "London, United Kindom",
+      "latest_updated": "Yesterday"
+    },
+    {
+      "city_name": "Tel aviv, Israel",
+      "latest_updated": "Updated: 111 minutes ago"
+    },
+    {
+      "city_name": "Amsterdam, Netherlands",
+      "latest_updated": "Updated: 60 minutes ago"
+    },
+    {
+      "city_name": "Casablanca, Morocco",
+      "latest_updated": "Updated: 20 minutes ago"
+    },
+    {
+      "city_name": "Bangkok, Thailand",
+      "latest_updated": "Updated: 3 minutes ago"
+    },
+    {
+      "city_name": "Beijing, China",
+      "latest_updated": "Updated: 35 minutes ago"
+    },
+    {
+      "city_name": "Hong Kong, China",
+      "latest_updated": "Updated: 15 minutes ago"
+    }
+  ]
+}

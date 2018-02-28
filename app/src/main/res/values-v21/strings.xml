@@ -7,4 +7,5 @@
     <string name="application_name">Weather Application</string>
     <string name="version001">Version 0.0.1</string>
     <string name="searchbutton">searchButton</string>
+    <string name="saved_cities">Saved Cities</string>
 </resources>
