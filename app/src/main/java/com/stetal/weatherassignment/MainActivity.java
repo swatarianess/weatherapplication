@@ -27,11 +27,10 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
-
     ArrayList<CityData> cityDataArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
-    private CityRecyclerAdapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private CityRecyclerAdapter mRecyclerAdapter;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
@@ -52,19 +51,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Configure the refreshing colors
-
-
-
         //RecyclerView Stuff!
 
         mRecyclerView = findViewById(R.id.citiesRecyclerView);
         mRecyclerView.setHasFixedSize(true);
 
-        CityData london = new CityData(200, "London", "United Kingdom", 1519838493L);
-        CityData amsterdam = new CityData(1, "Amsterdam", "Netherlands", 1486732893L);
+
+        //Random Data to fill into the Recycler View
+        CityData london = new CityData(200, "London", "United Kingdom", 1520002700L);
+        CityData amsterdam = new CityData(1, "Amsterdam", "Netherlands", 1520000694L);
         CityData hongKong = new CityData(334, "Hong Kong", "China", 1513249600L);
-        CityData bangkok = new CityData(663, "BangKok", "Thailand", 1519845048L);
+        CityData bangkok = new CityData(663, "BangKok", "Thailand", 1519916293L);
         CityData casablanca = new CityData(663, "Casablanca", "Morocco", 1519841556L);
         CityData beijing = new CityData(888, "Beijing", "China", 1519841000L);
         CityData telAviv = new CityData(123, "Tel Aviv", "Israel", 1519841711L);
@@ -74,13 +71,15 @@ public class MainActivity extends AppCompatActivity
 
         cityDataArrayList.addAll(Arrays.asList(london, amsterdam, hongKong, bangkok, casablanca, beijing, telAviv
         , mexicoCity, souel, nyc));
+        //------
 
+        //Initializing properties for the Recycler View
         mRecyclerAdapter = new CityRecyclerAdapter(cityDataArrayList);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayout.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerAdapter);
-
+        //-----
         swipeContainer = findViewById(R.id.swipeRefreshLayout);
         swipeContainer.setOnRefreshListener(this);
 
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //
     }
 
     @Override
@@ -103,16 +101,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
+    /**
+     *  Handles action bar item clicks.
+     *
+     * @param item The menu item that has been selected
+     * @return Returns i
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -124,6 +127,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @param item The menu item that has been selected
+     * @return Returns true always?
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -142,11 +149,19 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * This method is called when scroll-to-refresh event happens.
+     * Currently;
+     *  - Updates the recycler view's adapter
+     *  - Waits 3 seconds
+     *  - Hides the Refreshing animation
+     *
+     */
     @Override
     public void onRefresh() {
         Handler handler = new Handler();
         handler.postDelayed(()-> {
-            mRecyclerView.setAdapter(new CityRecyclerAdapter(cityDataArrayList));
+            mRecyclerAdapter.notifyData(cityDataArrayList);
             swipeContainer.setRefreshing(false);
         }                    ,3000);
     }

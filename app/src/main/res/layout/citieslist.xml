@@ -25,6 +25,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/cityName"
-        tools:text="@sample/last_updated.json/data/latest_updated" />
+        tools:text="Updated: X minutes ago" />
+
+    <TextView
+        android:id="@+id/weatherIconView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:typeface=""
+        android:text="aaaaaaa" />
 
 </RelativeLayout>

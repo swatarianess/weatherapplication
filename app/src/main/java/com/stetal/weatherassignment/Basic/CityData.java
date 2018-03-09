@@ -2,6 +2,8 @@ package com.stetal.weatherassignment.Basic;
 
 import android.os.SystemClock;
 
+import java.util.Random;
+
 /**
  * @author Ultraphatty
  * @version 0.0.1
@@ -10,9 +12,21 @@ import android.os.SystemClock;
 
 public class CityData {
 
+    Random r = new Random();
+
     private int CityID;
     private String cityName;
     private String country;
+    private String currentWeatherIcon;
+    private String[] weatherTypes = {
+            "&#xf022;",
+            "&#xf016;",
+            "&#xf01b;",
+            "&#xf021;",
+            "&#xf071;",
+            "&#xf02e;"
+    };
+
     private long lastUpdated;
 
     public CityData(){
@@ -20,6 +34,7 @@ public class CityData {
         this.cityName = "";
         this.country = "";
         this.lastUpdated = SystemClock.currentThreadTimeMillis();
+        this.currentWeatherIcon = weatherTypes[r.nextInt(weatherTypes.length-1)];
     }
 
     public CityData(int cityID, String cityName, String country, long lastUpdated) {
@@ -27,6 +42,15 @@ public class CityData {
         this.cityName = cityName;
         this.country = country;
         this.lastUpdated = lastUpdated;
+        this.currentWeatherIcon = weatherTypes[r.nextInt(weatherTypes.length-1)];
+    }
+
+    public CityData(int cityID, String cityName, String country, long lastUpdated, String currentWeatherIcon) {
+        CityID = cityID;
+        this.cityName = cityName;
+        this.country = country;
+        this.lastUpdated = lastUpdated;
+        this.currentWeatherIcon = currentWeatherIcon;
     }
 
     public int getCityID() {
@@ -64,4 +88,15 @@ public class CityData {
         this.country = country;
         return this;
     }
+
+    public String getCurrentWeatherIcon() {
+        return currentWeatherIcon;
+    }
+
+    public CityData setCurrentWeatherIcon(String currentWeatherIcon) {
+        this.currentWeatherIcon = currentWeatherIcon;
+        return this;
+    }
+
+
 }

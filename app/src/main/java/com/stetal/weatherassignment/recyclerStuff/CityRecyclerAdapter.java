@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stetal.weatherassignment.Basic.CityData;
+import com.stetal.weatherassignment.FontManager;
 import com.stetal.weatherassignment.R;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.RecyclerItemViewHolder> {
 
-    ArrayList<CityData> myList = new ArrayList<>();
+    private ArrayList<CityData> myList = new ArrayList<>();
     private int mLastPosition = 0;
     private RemoveClickListener mListener;
 
@@ -40,12 +41,14 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
     @Override
     public void onBindViewHolder(RecyclerItemViewHolder holder, int position) {
-        Log.d("onBindViewHolder ", myList.size() + "");
         CityData item = myList.get(position);
         long expiry = item.getLastUpdated() < 1000000000000L ? item.getLastUpdated() * 1000 : item.getLastUpdated();
 
         holder.cityNameTextView.setText(String.format("%s, %s",item.getCityName(),item.getCountry()));
         holder.lastUpdatedTextView.setText(String.format("Updated: %s",DateUtils.getRelativeTimeSpanString(expiry)));
+
+        holder.weatherIconTextView.setTypeface(FontManager.getTypeface(holder.mainLayout.getContext(),FontManager.FONTAWESOME));
+        holder.weatherIconTextView.setText(item.getCurrentWeatherIcon());
     }
 
     @Override
@@ -53,16 +56,10 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         return myList.size();
     }
 
-    public void clear(){
-        this.myList.clear();
-        notifyDataSetChanged();
-    }
 
-    public void addAll(ArrayList<CityData> dataList){
-        this.myList = (dataList);
-        notifyDataSetChanged();
-    }
-
+    /**
+     * @param cityData New set of data to add to Adapter
+     */
     public void notifyData(ArrayList<CityData> cityData){
         Log.d("notifyData ", myList.size() + "");
         this.myList = cityData;
@@ -70,9 +67,13 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
     }
 
 
+    /**
+     *  Inner class that handles the ViewHolder of the item.
+     */
     class RecyclerItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView cityNameTextView;
         private final TextView lastUpdatedTextView;
+        private final TextView weatherIconTextView;
         private RelativeLayout mainLayout;
 
         RecyclerItemViewHolder(final View parent) {
@@ -80,6 +81,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
             cityNameTextView = parent.findViewById(R.id.cityName);
             lastUpdatedTextView = parent.findViewById(R.id.cityLastUpdated);
             mainLayout = parent.findViewById(R.id.cityRowLayout);
+            weatherIconTextView = parent.findViewById(R.id.weatherIconView);
 
             mainLayout.setOnClickListener(view -> Toast.makeText(itemView.getContext(), String.format("Clicked: %s",cityNameTextView.getText().toString()), Toast.LENGTH_SHORT).show());
         }
