@@ -5,14 +5,14 @@ import android.os.SystemClock;
 import java.util.Random;
 
 /**
- * @author Ultraphatty
+ * @author Stephen Adu
  * @version 0.0.1
  * @since 28/02/2018
  */
 
 public class CityData {
 
-    Random r = new Random();
+    private Random r = new Random();
 
     private int CityID;
     private String cityName;
