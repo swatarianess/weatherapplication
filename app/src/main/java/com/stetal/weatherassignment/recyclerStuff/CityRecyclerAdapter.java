@@ -1,5 +1,6 @@
 package com.stetal.weatherassignment.recyclerStuff;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -10,14 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stetal.weatherassignment.Basic.CityData;
+import com.stetal.weatherassignment.util.CityData;
 import com.stetal.weatherassignment.FontManager;
 import com.stetal.weatherassignment.R;
 
 import java.util.ArrayList;
 
 /**
- * @author Ultraphatty
+ * @author Stephen Adu
  * @version 0.0.1
  * @since 28/02/2018
  */
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.RecyclerItemViewHolder> {
 
     private ArrayList<CityData> myList = new ArrayList<>();
-    private int mLastPosition = 0;
     private RemoveClickListener mListener;
 
     public CityRecyclerAdapter(ArrayList<CityData> myList) {
@@ -47,15 +47,17 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         holder.cityNameTextView.setText(String.format("%s, %s",item.getCityName(),item.getCountry()));
         holder.lastUpdatedTextView.setText(String.format("Updated: %s",DateUtils.getRelativeTimeSpanString(expiry)));
 
-        holder.weatherIconTextView.setTypeface(FontManager.getTypeface(holder.mainLayout.getContext(),FontManager.FONTAWESOME));
-        holder.weatherIconTextView.setText(item.getCurrentWeatherIcon());
+        //TODO: Find out if the TypeFace is actually being changed or not..
+        String hexWeatherIcon = item.getCurrentWeatherIcon().replace("&#x","").replace(";","");
+        long valLong = Long.parseLong(hexWeatherIcon,16);
+
+        holder.weatherIconTextView.setText(String.valueOf((char) valLong));
     }
 
     @Override
     public int getItemCount() {
         return myList.size();
     }
-
 
     /**
      * @param cityData New set of data to add to Adapter
@@ -78,10 +80,13 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
         RecyclerItemViewHolder(final View parent) {
             super(parent);
-            cityNameTextView = parent.findViewById(R.id.cityName);
-            lastUpdatedTextView = parent.findViewById(R.id.cityLastUpdated);
-            mainLayout = parent.findViewById(R.id.cityRowLayout);
-            weatherIconTextView = parent.findViewById(R.id.weatherIconView);
+            this.cityNameTextView = parent.findViewById(R.id.cityName);
+            this.lastUpdatedTextView = parent.findViewById(R.id.cityLastUpdated);
+            this.mainLayout = parent.findViewById(R.id.cityRowLayout);
+            this.weatherIconTextView = parent.findViewById(R.id.weatherIconView);
+
+            Typeface typeface = Typeface.createFromAsset(parent.getContext().getAssets(), "weatherfont.ttf");
+            this.weatherIconTextView.setTypeface(typeface);
 
             mainLayout.setOnClickListener(view -> Toast.makeText(itemView.getContext(), String.format("Clicked: %s",cityNameTextView.getText().toString()), Toast.LENGTH_SHORT).show());
         }

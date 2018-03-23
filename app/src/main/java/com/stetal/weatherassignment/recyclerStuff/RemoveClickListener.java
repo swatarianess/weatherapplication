@@ -1,7 +1,7 @@
 package com.stetal.weatherassignment.recyclerStuff;
 
 /**
- * @author Ultraphatty
+ * @author Stephen Adu
  * @version 0.0.1
  * @since 28/02/2018
  */

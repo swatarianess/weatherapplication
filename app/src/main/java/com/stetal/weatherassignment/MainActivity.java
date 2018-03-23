@@ -13,12 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.stetal.weatherassignment.Basic.CityData;
+import com.stetal.weatherassignment.util.CityData;
 import com.stetal.weatherassignment.recyclerStuff.CityRecyclerAdapter;
 
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //RecyclerView Stuff!
-
         mRecyclerView = findViewById(R.id.citiesRecyclerView);
         mRecyclerView.setHasFixedSize(true);
 
@@ -80,6 +80,27 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecyclerAdapter);
         //-----
+
+        //Initialize callback for smooth looking removal from list feature
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                final int pos = viewHolder.getAdapterPosition();
+                if (direction == ItemTouchHelper.LEFT){
+                        mRecyclerAdapter.notifyItemRemoved(pos+1);
+                        mRecyclerAdapter.notifyItemRangeChanged(pos,mRecyclerAdapter.getItemCount());
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        //-------
         swipeContainer = findViewById(R.id.swipeRefreshLayout);
         swipeContainer.setOnRefreshListener(this);
 

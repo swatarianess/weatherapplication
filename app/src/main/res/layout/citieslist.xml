@@ -27,13 +27,15 @@
         android:layout_below="@+id/cityName"
         tools:text="Updated: X minutes ago" />
 
-    <TextView
+    <com.stetal.weatherassignment.FontAwesome
         android:id="@+id/weatherIconView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:typeface=""
-        android:text="aaaaaaa" />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/cityName"
+        android:textAlignment="viewEnd"
+        android:textSize="30sp"
+        tools:text="@string/wi_cloud" />
 
 </RelativeLayout>

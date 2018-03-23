@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.Basic;
+package com.stetal.weatherassignment.util;
 
 import android.os.SystemClock;
 
@@ -97,6 +97,7 @@ public class CityData {
         this.currentWeatherIcon = currentWeatherIcon;
         return this;
     }
+
 
 
 }

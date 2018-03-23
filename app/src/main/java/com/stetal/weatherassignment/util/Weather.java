@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.Basic;
+package com.stetal.weatherassignment.util;
 
 import java.util.Date;
 
@@ -19,6 +19,5 @@ public class Weather {
     private float temperatureMax;
     private float pressure;
     private float humidity;
-
 
 }

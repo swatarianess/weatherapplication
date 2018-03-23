@@ -168,7 +168,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+//                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || WeatherPreferenceFragment.class.getName().equals(fragmentName);
@@ -247,10 +247,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
 
@@ -281,7 +277,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preference buttonSim = findPreference("aboutPreference");
             buttonSim.setOnPreferenceClickListener((preference) -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Toast.makeText(getContext(), "Clicked: " + preference.getKey(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Clicked: " + preference.getKey(), Toast.LENGTH_SHORT).show();
                     createAboutDialog(getContext()).show();
                 }
                 return true;

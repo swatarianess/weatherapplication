@@ -133,7 +133,7 @@ public class Function {
                     new InputStreamReader(connection.getInputStream()));
 
             StringBuffer json = new StringBuffer(1024);
-            String tmp = "";
+            String tmp;
             while ((tmp = reader.readLine()) != null)
                 json.append(tmp).append("\n");
             reader.close();

@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="wi_cloud">&#xf041;</string>
+    <string name="wi_cloudy">&#xf013;</string>
+    <string name="wi_cloudy_gusts">&#xf011;</string>
+    <string name="wi_cloudy_windy">&#xf012;</string>
+    <string name="wi_fog">&#xf014;</string>
+    <string name="wi_hail">&#xf015;</string>
+    <string name="wi_rain">&#xf019;</string>
+    <string name="wi_rain_mix">&#xf017;</string>
+</resources>
