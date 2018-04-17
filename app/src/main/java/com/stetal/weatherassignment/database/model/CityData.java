@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.util;
+package com.stetal.weatherassignment.database.model;
 
 import android.os.SystemClock;
 

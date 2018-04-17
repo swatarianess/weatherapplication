@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.recyclerStuff;
+package com.stetal.weatherassignment.citySelection;
 
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stetal.weatherassignment.util.CityData;
-import com.stetal.weatherassignment.FontManager;
+import com.stetal.weatherassignment.database.model.CityData;
 import com.stetal.weatherassignment.R;
+import com.stetal.weatherassignment.util.RemoveClickListener;
 
 import java.util.ArrayList;
 

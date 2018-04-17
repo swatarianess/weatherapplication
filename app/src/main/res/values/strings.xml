@@ -92,4 +92,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="saved_cities">Saved Cities</string>
+    <string name="title_activity_city_search">Add City</string>
 </resources>

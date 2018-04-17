@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.recyclerStuff;
+package com.stetal.weatherassignment.util;
 
 /**
  * @author Stephen Adu

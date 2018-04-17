@@ -19,8 +19,8 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.stetal.weatherassignment.util.CityData;
-import com.stetal.weatherassignment.recyclerStuff.CityRecyclerAdapter;
+import com.stetal.weatherassignment.database.model.CityData;
+import com.stetal.weatherassignment.citySelection.CityRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
