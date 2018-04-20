@@ -17,8 +17,6 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,16 +34,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
-                android:textSize="18sp"
-                tools:text="Day" />
+                android:textSize="14sp"
+                tools:text="@sample/tools:date/day_of_week" />
 
             <TextView
                 android:id="@+id/weatherDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
-                android:textSize="18sp"
-                tools:text="15/10/1990" />
+                android:textSize="14sp"
+                tools:text="@sample/tools:date/ddmmyy" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,20 +52,21 @@
             android:gravity="end"
             android:orientation="vertical">
 
+            <com.stetal.weatherassignment.FontAwesome
+                android:id="@+id/WeatherType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:textSize="14sp"
+                tools:text="@sample/last_updated.json/data/weather" />
+
             <TextView
-                android:id="@+id/location"
+                android:id="@+id/temperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:textSize="18sp"
-                tools:text="@sample/last_updated.json/data/city_name" />
-
-            <TextView
-                android:id="@+id/weatherIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
-                android:textSize="18sp" />
+                tools:text="@sample/last_updated.json/data/temperature" />
 
         </LinearLayout>
     </LinearLayout>

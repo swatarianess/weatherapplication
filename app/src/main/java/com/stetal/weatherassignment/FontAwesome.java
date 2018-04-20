@@ -5,7 +5,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 /**
- * Created by swatarianess on 23/03/2018.
+ * @author Stephen Adu
+ * @version 0.0.1
+ * @since 09/03/2018
  */
 
 public class FontAwesome extends android.support.v7.widget.AppCompatTextView {

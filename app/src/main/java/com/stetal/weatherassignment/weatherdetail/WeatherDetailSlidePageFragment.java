@@ -13,6 +13,6 @@ public class WeatherDetailSlidePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return (ViewGroup) inflater.inflate(R.layout.weatherdetailview, container, false);
+        return inflater.inflate(R.layout.weatherdetail_fragmentview, container, false);
     }
 }

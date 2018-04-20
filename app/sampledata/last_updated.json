@@ -2,31 +2,45 @@
   "data": [
     {
       "city_name": "London, United Kindom",
-      "weatherType": "&#xf041;"
+      "weatherType": "&#xf041;",
+      "weather": "Sunny",
+      "temperature" : 20
     },
     {
       "city_name": "Tel aviv, Israel",
-      "weatherType": "&#xf041;"
+      "weatherType": "&#xf041;",
+      "weather": "sunny",
+      "temperature" : 29
     },
     {
       "city_name": "Amsterdam, Netherlands",
-      "weatherType": "&#xf02a;"
+      "weatherType": "&#xf02a;",
+      "weather": "Rain",
+      "temperature" : 33
     },
     {
       "city_name": "Casablanca, Morocco",
-      "weatherType": "&#xf041;"
+      "weatherType": "&#xf041;",
+      "weather": "Snow",
+      "temperature" : 12
     },
     {
       "city_name": "Bangkok, Thailand",
-      "weatherType": "&#xf072;"
+      "weatherType": "&#xf072;",
+      "weather": "Hail",
+      "temperature" : 19
     },
     {
       "city_name": "Beijing, China",
-      "weatherType": "&#xf041;"
+      "weatherType": "&#xf041;",
+      "weather": "Rain",
+      "temperature" : 22
     },
     {
       "city_name": "Hong Kong, China",
-      "weatherType": "&#xf041;"
+      "weatherType": "&#xf041;",
+      "weather": "Sunny",
+      "temperature" : 31
     }
   ]
 }
