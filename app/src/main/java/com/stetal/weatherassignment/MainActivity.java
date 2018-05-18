@@ -14,31 +14,36 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.stetal.weatherassignment.database.model.CityData;
 import com.stetal.weatherassignment.citySelection.CityRecyclerAdapter;
+import com.stetal.weatherassignment.database.SqliteDatabase;
+import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
+import com.stetal.weatherassignment.mapSearch.CitySearchActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
-    ArrayList<CityData> cityDataArrayList = new ArrayList<>();
+    private ArrayList<FavouriteCitySchema> cityDataArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private CityRecyclerAdapter mRecyclerAdapter;
     private SwipeRefreshLayout swipeContainer;
+    SqliteDatabase mDataSource;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mDataSource = new SqliteDatabase(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,20 +62,8 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(true);
 
 
-        //Random Data to fill into the Recycler View
-        CityData london = new CityData(200, "London", "United Kingdom", 1520002700L);
-        CityData amsterdam = new CityData(1, "Amsterdam", "Netherlands", 1520000694L);
-        CityData hongKong = new CityData(334, "Hong Kong", "China", 1513249600L);
-        CityData bangkok = new CityData(663, "BangKok", "Thailand", 1519916293L);
-        CityData casablanca = new CityData(663, "Casablanca", "Morocco", 1519841556L);
-        CityData beijing = new CityData(888, "Beijing", "China", 1519841000L);
-        CityData telAviv = new CityData(123, "Tel Aviv", "Israel", 1519841711L);
-        CityData mexicoCity = new CityData(123, "Mexico City", "Mexico", 1519843811L);
-        CityData souel = new CityData(123, "Souel", "South Korea", 1519846999L);
-        CityData nyc = new CityData(123, "New York City", "USA", 1519848999L);
-
-        cityDataArrayList.addAll(Arrays.asList(london, amsterdam, hongKong, bangkok, casablanca, beijing, telAviv
-        , mexicoCity, souel, nyc));
+        //Saved Cities Data to fill into the Recycler View
+        cityDataArrayList.addAll(mDataSource.getAllSavedCities());
         //------
 
         //Initializing properties for the Recycler View
@@ -91,9 +84,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int pos = viewHolder.getAdapterPosition();
-                if (direction == ItemTouchHelper.LEFT){
-                        mRecyclerAdapter.notifyItemRemoved(pos+1);
-                        mRecyclerAdapter.notifyItemRangeChanged(pos,mRecyclerAdapter.getItemCount());
+                if (direction == ItemTouchHelper.LEFT) {
+                    mRecyclerAdapter.removeItem(pos);
+//                    mRecyclerAdapter.notifyItemRemoved(pos);
+//                    mRecyclerAdapter.notifyItemRangeChanged(pos, mRecyclerAdapter.getItemCount());
                 }
             }
         };
@@ -127,24 +121,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     *  Handles action bar item clicks.
+     * Handles action bar item clicks.
      *
      * @param item The menu item that has been selected
-     * @return Returns i
+     * @return Returns if the item was selected?
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.citySearchMenuButton) {
-            Toast.makeText(this, "Send to Search Fragment!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, CitySearchActivity.class));
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -155,11 +143,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        long currentTime = Calendar.getInstance().getTime().getTime();
 
         if (id == R.id.app_cities) {
             Toast.makeText(this, "Clicked Cities List!", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.app_current_location) {
-            Toast.makeText(this, "Clicked Current Location!", Toast.LENGTH_SHORT).show();
+            SqliteDatabase dbh = new SqliteDatabase(this);
+
+            //Todo: Remove inserting to db in next iteration
+            dbh.insertCity(new FavouriteCitySchema("Amsterdam", "Netherlands", currentTime));
+            dbh.insertCity(new FavouriteCitySchema("Tokyo", "Japan", currentTime));
+            Log.i("currentTime: ", String.valueOf(currentTime));
+
+            Log.i("Saved Cities: ", dbh.getAllSavedCities().toString());
+
         } else if (id == R.id.app_settings) {
             Toast.makeText(this, "Clicked Application Settings!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, SettingsActivity.class));
@@ -173,17 +170,17 @@ public class MainActivity extends AppCompatActivity
     /**
      * This method is called when scroll-to-refresh event happens.
      * Currently;
-     *  - Updates the recycler view's adapter
-     *  - Waits 3 seconds
-     *  - Hides the Refreshing animation
-     *
+     * - Updates the recycler view's adapter
+     * - Waits 3 seconds
+     * - Hides the Refreshing animation
      */
     @Override
     public void onRefresh() {
+        Log.i("City Count: ", String.valueOf(mDataSource.getSavedCityCount()));
         Handler handler = new Handler();
-        handler.postDelayed(()-> {
-            mRecyclerAdapter.notifyData(cityDataArrayList);
+        handler.postDelayed(() -> {
+            mRecyclerAdapter.notifyData((ArrayList<FavouriteCitySchema>) mDataSource.getAllSavedCities());
             swipeContainer.setRefreshing(false);
-        }                    ,3000);
+        }, 1000);
     }
 }

@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import com.stetal.weatherassignment.R;
 
-public class WeatherDetailSlidePagerActivity extends FragmentActivity {
+public class WeatherForecastActivity extends FragmentActivity {
 
     private static final int NUM_PAGES = 5;
 
@@ -21,6 +21,7 @@ public class WeatherDetailSlidePagerActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String cityName = getIntent().getStringExtra("CITY_NAME");
 
         setContentView(R.layout.weatherdetailview);
 

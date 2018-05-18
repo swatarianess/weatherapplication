@@ -25,17 +25,19 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".CitySearchActivity"
+            android:name=".mapSearch.CitySearchActivity"
             android:label="@string/title_activity_city_search">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.stetal.weatherassignment.MainActivity" />
         </activity>
+        <activity android:name=".weatherdetail.WeatherForecastActivity" />
     </application>
 
 </manifest>

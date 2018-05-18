@@ -1,5 +1,7 @@
 package com.stetal.weatherassignment.citySelection;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -9,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.stetal.weatherassignment.database.model.CityData;
 import com.stetal.weatherassignment.R;
+import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
 import com.stetal.weatherassignment.util.RemoveClickListener;
+import com.stetal.weatherassignment.weatherdetail.WeatherForecastActivity;
 
 import java.util.ArrayList;
 
@@ -25,10 +27,10 @@ import java.util.ArrayList;
 
 public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.RecyclerItemViewHolder> {
 
-    private ArrayList<CityData> myList = new ArrayList<>();
+    private ArrayList<FavouriteCitySchema> myList;
     private RemoveClickListener mListener;
 
-    public CityRecyclerAdapter(ArrayList<CityData> myList) {
+    public CityRecyclerAdapter(ArrayList<FavouriteCitySchema> myList) {
         this.myList = myList;
         this.mListener = null;
     }
@@ -41,17 +43,23 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
     @Override
     public void onBindViewHolder(RecyclerItemViewHolder holder, int position) {
-        CityData item = myList.get(position);
-        long expiry = item.getLastUpdated() < 1000000000000L ? item.getLastUpdated() * 1000 : item.getLastUpdated();
+        FavouriteCitySchema item = myList.get(position);
+        long timestamp = item.getTimestamp();
+//        long expiry = timestamp < 1000000000000L ? timestamp * 1000 : timestamp;
+        long expiry = timestamp;
 
-        holder.cityNameTextView.setText(String.format("%s, %s",item.getCityName(),item.getCountry()));
-        holder.lastUpdatedTextView.setText(String.format("Updated: %s",DateUtils.getRelativeTimeSpanString(expiry)));
+        holder.cityNameTextView.setText(String.format("%s, %s",item.getName(),item.getCountry()));
+        holder.lastUpdatedTextView.setText(String.format("Updated: %s", DateUtils.getRelativeTimeSpanString(expiry)));
 
-        //TODO: Find out if the TypeFace is actually being changed or not..
-        String hexWeatherIcon = item.getCurrentWeatherIcon().replace("&#x","").replace(";","");
+//        String hexWeatherIcon = item.getCurrentWeatherIcon().replace("&#x","").replace(";","");
+        String hexWeatherIcon = "&#xf022;".replace("&#x","").replace(";","");
         long valLong = Long.parseLong(hexWeatherIcon,16);
-
         holder.weatherIconTextView.setText(String.valueOf((char) valLong));
+    }
+
+    public void removeItem(int position) {
+        myList.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -59,10 +67,14 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         return myList.size();
     }
 
+    public ArrayList<FavouriteCitySchema> getCityList() {
+        return myList;
+    }
+
     /**
      * @param cityData New set of data to add to Adapter
      */
-    public void notifyData(ArrayList<CityData> cityData){
+    public void notifyData(ArrayList<FavouriteCitySchema> cityData){
         Log.d("notifyData ", myList.size() + "");
         this.myList = cityData;
         notifyDataSetChanged();
@@ -88,7 +100,15 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
             Typeface typeface = Typeface.createFromAsset(parent.getContext().getAssets(), "weatherfont.ttf");
             this.weatherIconTextView.setTypeface(typeface);
 
-            mainLayout.setOnClickListener(view -> Toast.makeText(itemView.getContext(), String.format("Clicked: %s",cityNameTextView.getText().toString()), Toast.LENGTH_SHORT).show());
+//            mainLayout.setOnClickListener(view -> Toast.makeText(itemView.getContext(), String.format("Clicked: %s",cityNameTextView.getText().toString()), Toast.LENGTH_SHORT).show());
+
+
+            mainLayout.setOnClickListener(view -> {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, WeatherForecastActivity.class);
+                intent.putExtra("CITY_NAME", cityNameTextView.getText().toString());
+                context.startActivity(intent);
+            });
         }
     }
 

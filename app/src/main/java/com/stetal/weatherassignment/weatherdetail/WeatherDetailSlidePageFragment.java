@@ -10,9 +10,10 @@ import com.stetal.weatherassignment.R;
 
 public class WeatherDetailSlidePageFragment extends Fragment {
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.weatherdetail_fragmentview, container, false);
+        final View v = inflater.inflate(R.layout.weatherdetail_fragmentview, container, false);
+        return v;
     }
 }
