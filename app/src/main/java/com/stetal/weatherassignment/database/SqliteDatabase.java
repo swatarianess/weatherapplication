@@ -150,5 +150,11 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteTable(String tableName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + tableName);
+        db.close();
+    }
+
 
 }

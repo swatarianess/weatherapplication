@@ -3,12 +3,12 @@ package com.stetal.weatherassignment.database.model;
 public class FavouriteCitySchema {
 
     public static final String TABLE_NAME = "Cities";
-    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CITY_COUNTRY = "country";
     public static final String COLUMN_CITY_NAME = "name";
     public static final String COLUMN_TIMESTAMP = "timestamp";
 
-    private String timestamp;
+    private long timestamp;
     private String name;
     private String country;
 
@@ -29,17 +29,17 @@ public class FavouriteCitySchema {
      * @param country Country the city is in
      * @param timestamp Time of adding the city
      */
-    public FavouriteCitySchema(String name, String country, String timestamp) {
+    public FavouriteCitySchema(String name, String country, long timestamp) {
         this.timestamp = timestamp;
         this.name = name;
         this.country = country;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

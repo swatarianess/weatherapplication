@@ -1,11 +1,11 @@
-package com.stetal.weatherassignment;
+package com.stetal.weatherassignment.database;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
 
 import org.junit.After;
@@ -14,15 +14,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabaseInstrumentedTest {
 
     private SqliteDatabase mDataSource;
-    private ArrayList<FavouriteCitySchema> cityList = new ArrayList<>();
+    private FavouriteCitySchema ams = new FavouriteCitySchema( "Amsterdam", "Netherlands", 1500555555L);
+    private FavouriteCitySchema tok = new FavouriteCitySchema( "Tokyo", "Japan", 1500555555L);
 
     @Test
     public void onCreate() {
@@ -33,19 +33,19 @@ public class DatabaseInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         mDataSource = new SqliteDatabase(appContext);
         mDataSource.getAllSavedCities();
-        mDataSource.insertCity(new FavouriteCitySchema( "Amsterdam", "Netherlands", 1500555555L));
+        mDataSource.insertCity(ams);
     }
 
     @After
     public void finished(){
-        mDataSource.close();
+        mDataSource.deleteTable(FavouriteCitySchema.TABLE_NAME);
     }
 
     @Test
     public void insertCity() {
-        mDataSource.insertCity(new FavouriteCitySchema("Tokyo", "Japan", 1525861701L));
+        mDataSource.insertCity(new FavouriteCitySchema("Tokyo", "Japan", SystemClock.currentThreadTimeMillis()));
         System.out.println("mDataSource.getSavedCityCount() = " + mDataSource.getSavedCityCount());
-        assertEquals(2,mDataSource.getSavedCityCount());
+        assertNotEquals(0,mDataSource.getSavedCityCount());
     }
 
     @Ignore
@@ -56,14 +56,21 @@ public class DatabaseInstrumentedTest {
     public void getAllSavedCities() {
     }
 
-    @Ignore
+    @Test
     public void getSavedCityCount() {
         Log.i("getSavedCityCount: ", String.valueOf(mDataSource.getSavedCityCount()));
-        System.out.println("mDataSource.getSavedCityCount() = " + mDataSource.getSavedCityCount());
+        mDataSource.deleteTable(FavouriteCitySchema.TABLE_NAME);
+        Log.i("getSavedCityCount: ", String.valueOf(mDataSource.getSavedCityCount()));
         assertEquals(0, mDataSource.getSavedCityCount());
     }
 
-    @Ignore
+    @Test
     public void deleteSavedCity() {
+        mDataSource.insertCity(ams);
+        mDataSource.insertCity(ams);
+        mDataSource.insertCity(tok);
+        assertEquals(4, mDataSource.getSavedCityCount());
+        mDataSource.deleteSavedCity(tok.getName());
+        assertEquals(3, mDataSource.getSavedCityCount());
     }
 }
