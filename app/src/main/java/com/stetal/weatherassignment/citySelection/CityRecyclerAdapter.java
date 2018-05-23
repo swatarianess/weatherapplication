@@ -44,9 +44,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
     @Override
     public void onBindViewHolder(RecyclerItemViewHolder holder, int position) {
         FavouriteCitySchema item = myList.get(position);
-        long timestamp = item.getTimestamp();
-//        long expiry = timestamp < 1000000000000L ? timestamp * 1000 : timestamp;
-        long expiry = timestamp;
+        long expiry = item.getTimestamp();
 
         holder.cityNameTextView.setText(String.format("%s, %s",item.getName(),item.getCountry()));
         holder.lastUpdatedTextView.setText(String.format("Updated: %s", DateUtils.getRelativeTimeSpanString(expiry)));
@@ -55,6 +53,16 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         String hexWeatherIcon = "&#xf022;".replace("&#x","").replace(";","");
         long valLong = Long.parseLong(hexWeatherIcon,16);
         holder.weatherIconTextView.setText(String.valueOf((char) valLong));
+    }
+
+    /**
+     * Retrieves the particular item from the adapter
+     *
+     * @param position The position of the item to return
+     * @return Returns the Forecast item at the position
+     */
+    public FavouriteCitySchema getItem(int position){
+        return myList.get(position);
     }
 
     public void removeItem(int position) {
@@ -99,9 +107,6 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
             Typeface typeface = Typeface.createFromAsset(parent.getContext().getAssets(), "weatherfont.ttf");
             this.weatherIconTextView.setTypeface(typeface);
-
-//            mainLayout.setOnClickListener(view -> Toast.makeText(itemView.getContext(), String.format("Clicked: %s",cityNameTextView.getText().toString()), Toast.LENGTH_SHORT).show());
-
 
             mainLayout.setOnClickListener(view -> {
                 Context context = view.getContext();

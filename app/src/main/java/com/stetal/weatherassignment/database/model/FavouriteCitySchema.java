@@ -18,7 +18,7 @@ public class FavouriteCitySchema {
                     + " _id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUMN_CITY_COUNTRY + " TEXT,"
                     + COLUMN_CITY_NAME + " TEXT,"
-                    + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
+                    + COLUMN_TIMESTAMP + " INT "
                     + ")";
 
     public FavouriteCitySchema() {

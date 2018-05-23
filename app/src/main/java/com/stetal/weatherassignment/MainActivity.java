@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -23,20 +24,24 @@ import android.widget.Toast;
 import com.stetal.weatherassignment.citySelection.CityRecyclerAdapter;
 import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
+import com.stetal.weatherassignment.database.model.ForecastSchema;
 import com.stetal.weatherassignment.mapSearch.CitySearchActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private final String TAG = "MainActivity";
     private ArrayList<FavouriteCitySchema> cityDataArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private CityRecyclerAdapter mRecyclerAdapter;
     private SwipeRefreshLayout swipeContainer;
     SqliteDatabase mDataSource;
+
+    private ArrayList<Pair<String, String>> cityDummyData = new ArrayList<>();
 
 
     @Override
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataSource = new SqliteDatabase(this);
+        populateCityList();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         //RecyclerView Stuff!
         mRecyclerView = findViewById(R.id.citiesRecyclerView);
-        mRecyclerView.setHasFixedSize(true);
+//        mRecyclerView.setHasFixedSize(true);
 
 
         //Saved Cities Data to fill into the Recycler View
@@ -85,23 +91,24 @@ public class MainActivity extends AppCompatActivity
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int pos = viewHolder.getAdapterPosition();
                 if (direction == ItemTouchHelper.LEFT) {
+                    mDataSource.removeSavedCity(mRecyclerAdapter.getItem(pos));
                     mRecyclerAdapter.removeItem(pos);
-//                    mRecyclerAdapter.notifyItemRemoved(pos);
-//                    mRecyclerAdapter.notifyItemRangeChanged(pos, mRecyclerAdapter.getItemCount());
+                    Log.i(TAG, "onSwiped pos: " + pos);
                 }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        //-------
         swipeContainer = findViewById(R.id.swipeRefreshLayout);
         swipeContainer.setOnRefreshListener(this);
 
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        swipeContainer.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                android.R.color.holo_red_light
+        );
     }
 
     @Override
@@ -146,13 +153,27 @@ public class MainActivity extends AppCompatActivity
         long currentTime = Calendar.getInstance().getTime().getTime();
 
         if (id == R.id.app_cities) {
-            Toast.makeText(this, "Clicked Cities List!", Toast.LENGTH_SHORT).show();
+            SqliteDatabase dbh = new SqliteDatabase(this);
+            dbh.deleteTable(FavouriteCitySchema.TABLE_NAME);
+            dbh.deleteTable(ForecastSchema.TABLE_NAME);
+
+            Toast.makeText(this, "Cleared Tables!", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.app_current_location) {
             SqliteDatabase dbh = new SqliteDatabase(this);
 
             //Todo: Remove inserting to db in next iteration
-            dbh.insertCity(new FavouriteCitySchema("Amsterdam", "Netherlands", currentTime));
-            dbh.insertCity(new FavouriteCitySchema("Tokyo", "Japan", currentTime));
+            for (Pair<String, String> p : cityDummyData) {
+                dbh.insertCity(new FavouriteCitySchema(p.first, p.second, currentTime));
+            }
+
+            //TODO: Make sure this works!
+            List<ForecastSchema> dummyForecast = populateForecasts();
+//            dbh.addForecast(dummyForecast);
+            for(ForecastSchema f : dummyForecast){
+                dbh.addForecast(f);
+            }
+
             Log.i("currentTime: ", String.valueOf(currentTime));
 
             Log.i("Saved Cities: ", dbh.getAllSavedCities().toString());
@@ -171,16 +192,69 @@ public class MainActivity extends AppCompatActivity
      * This method is called when scroll-to-refresh event happens.
      * Currently;
      * - Updates the recycler view's adapter
-     * - Waits 3 seconds
+     * - Waits 1 seconds
      * - Hides the Refreshing animation
      */
     @Override
     public void onRefresh() {
-        Log.i("City Count: ", String.valueOf(mDataSource.getSavedCityCount()));
+        Log.i("City Count: ", String.valueOf(mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME)));
+        Log.i("Forecast Count: ", String.valueOf(mDataSource.getForecasts().size()));
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             mRecyclerAdapter.notifyData((ArrayList<FavouriteCitySchema>) mDataSource.getAllSavedCities());
             swipeContainer.setRefreshing(false);
         }, 1000);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: " + mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
+        mRecyclerAdapter.notifyData((ArrayList<FavouriteCitySchema>) mDataSource.getAllSavedCities());
+    }
+
+    private void populateCityList() {
+        cityDummyData.add(new Pair<>("Amsterdam", "Netherlands"));
+        cityDummyData.add(new Pair<>("Berlin", "Germany"));
+        cityDummyData.add(new Pair<>("Mumbai", "India"));
+        cityDummyData.add(new Pair<>("Bangalore", "India"));
+        cityDummyData.add(new Pair<>("Tokyo", "Japan"));
+        cityDummyData.add(new Pair<>("Beijing", "China"));
+        cityDummyData.add(new Pair<>("Hong Kong", "China"));
+    }
+
+    private List<ForecastSchema> populateForecasts() {
+        ArrayList<ForecastSchema> forecastSchemasList = new ArrayList<>();
+
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Sunny", 20L, 15, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Rainy", 13L, 18, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Thunder", 8L, 80, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Thunder", 27, 40, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Sunny", 23, 46, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Rain", 22, 80, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 12, 22, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Cloudy", 19, 33, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 29, 44, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 5, 55, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 2, 22, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 8, 1, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Cloudy", 10, 33, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Sunny", 12, 88, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Thunder", 32, 44, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Cloudy", 33, 55, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 47, 66, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 40, 77, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Sunny", 18, 15, 2, "something", Calendar.getInstance().getTime().getTime()));
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Cloudy", 20, 10, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Thunder", 22, 0, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+
+        return forecastSchemasList;
+    }
+
 }

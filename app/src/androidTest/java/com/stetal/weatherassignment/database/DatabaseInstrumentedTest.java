@@ -44,8 +44,8 @@ public class DatabaseInstrumentedTest {
     @Test
     public void insertCity() {
         mDataSource.insertCity(new FavouriteCitySchema("Tokyo", "Japan", SystemClock.currentThreadTimeMillis()));
-        System.out.println("mDataSource.getSavedCityCount() = " + mDataSource.getSavedCityCount());
-        assertNotEquals(0,mDataSource.getSavedCityCount());
+        System.out.println("mDataSource.getTableRowCount() = " + mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
+        assertNotEquals(0,mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
     }
 
     @Ignore
@@ -58,10 +58,10 @@ public class DatabaseInstrumentedTest {
 
     @Test
     public void getSavedCityCount() {
-        Log.i("getSavedCityCount: ", String.valueOf(mDataSource.getSavedCityCount()));
+        Log.i("getTableRowCount: ", String.valueOf(mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME)));
         mDataSource.deleteTable(FavouriteCitySchema.TABLE_NAME);
-        Log.i("getSavedCityCount: ", String.valueOf(mDataSource.getSavedCityCount()));
-        assertEquals(0, mDataSource.getSavedCityCount());
+        Log.i("getTableRowCount: ", String.valueOf(mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME)));
+        assertEquals(0, mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
     }
 
     @Test
@@ -69,8 +69,8 @@ public class DatabaseInstrumentedTest {
         mDataSource.insertCity(ams);
         mDataSource.insertCity(ams);
         mDataSource.insertCity(tok);
-        assertEquals(4, mDataSource.getSavedCityCount());
-        mDataSource.deleteSavedCity(tok.getName());
-        assertEquals(3, mDataSource.getSavedCityCount());
+        assertEquals(4, mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
+        mDataSource.removeSavedCity(tok.getName());
+        assertEquals(3, mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
     }
 }

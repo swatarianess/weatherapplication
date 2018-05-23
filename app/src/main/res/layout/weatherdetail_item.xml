@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/weekDate"
+                android:id="@+id/WeatherForecastDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
@@ -38,7 +38,7 @@
                 tools:text="@sample/tools:date/day_of_week" />
 
             <TextView
-                android:id="@+id/weatherDate"
+                android:id="@+id/WeatherForecastDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
@@ -47,13 +47,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="195dp"
             android:layout_height="match_parent"
             android:gravity="end"
             android:orientation="vertical">
 
-            <com.stetal.weatherassignment.FontAwesome
-                android:id="@+id/WeatherType"
+            <TextView
+                android:id="@+id/WeatherForecastDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
@@ -61,13 +61,28 @@
                 tools:text="@sample/last_updated.json/data/weather" />
 
             <TextView
-                android:id="@+id/temperature"
+                android:id="@+id/WeatherForecastTemperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:textSize="18sp"
                 tools:text="@sample/last_updated.json/data/temperature" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.stetal.weatherassignment.FontAwesome
+                android:id="@+id/WeatherForecastIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                tools:text="@string/wi_cloud" />
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
