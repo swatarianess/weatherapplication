@@ -1,5 +1,7 @@
 package com.stetal.weatherassignment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +19,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.stetal.weatherassignment.citySelection.CityRecyclerAdapter;
@@ -123,7 +127,34 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search, menu);
+//        getMenuInflater().inflate(R.menu.search, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.d(TAG, "onQueryTextSubmit ");
+                ArrayList<FavouriteCitySchema> result = new ArrayList<>();
+                result.add(mDataSource.getSavedCity(s));
+                mRecyclerAdapter.notifyData(result);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.d(TAG, "onQueryTextChange ");
+
+                return false;
+            }
+
+        });
+
+
         return true;
     }
 
@@ -169,7 +200,7 @@ public class MainActivity extends AppCompatActivity
 
             //TODO: Make sure this works!
             List<ForecastSchema> dummyForecast = populateForecasts();
-            for(ForecastSchema f : dummyForecast){
+            for (ForecastSchema f : dummyForecast) {
                 dbh.addForecast(f);
             }
 
@@ -257,7 +288,7 @@ public class MainActivity extends AppCompatActivity
         return forecastSchemasList;
     }
 
-    private Long dayToMiliseconds(int days){
+    private Long dayToMiliseconds(int days) {
         return (long) (days * 24 * 60 * 60 * 1000);
     }
 

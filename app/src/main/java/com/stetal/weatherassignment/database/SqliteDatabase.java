@@ -90,6 +90,38 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         return null;
     }
 
+    public FavouriteCitySchema getSavedCity(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        FavouriteCitySchema favouriteCitySchema;
+//        Cursor cursor = db.query(FavouriteCitySchema.TABLE_NAME,
+//                new String[]{FavouriteCitySchema.COLUMN_CITY_NAME, FavouriteCitySchema.COLUMN_CITY_COUNTRY, FavouriteCitySchema.COLUMN_TIMESTAMP},
+//                FavouriteCitySchema.COLUMN_CITY_NAME + " = ?",
+//                new String[]{String.valueOf(query)}, null, null, null, null);
+
+        String selectionQuery = "SELECT * FROM "
+                + ForecastSchema.TABLE_NAME
+                + " WHERE "
+                + ForecastSchema.COLUMN_CITY_NAME
+                + " LIKE \'"
+                + query
+                + "\'";
+
+        Cursor cursor = db.rawQuery(selectionQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            favouriteCitySchema = new FavouriteCitySchema(
+                    cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)),
+                    cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)),
+                    cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP))
+            );
+            cursor.close();
+            return favouriteCitySchema;
+        }
+
+        db.close();
+        return null;
+    }
+
     public List<FavouriteCitySchema> getAllSavedCities() {
         List<FavouriteCitySchema> savedCities = new ArrayList<>();
 
