@@ -24,7 +24,7 @@ public class ForecastSchema {
             "CREATE TABLE " + TABLE_NAME
                     + "("
                     + " _id INTEGER PRIMARY KEY AUTOINCREMENT, "    // ID Column
-                    + COLUMN_CITY_NAME      + " TEXT, "                  // Forecast City Column
+                    + COLUMN_CITY_NAME      + " TEXT, "             // Forecast City Column
                     + COLUMN_DESCRIPTION    + " TEXT, "             // Forecast Desc Column
                     + COLUMN_TEMPERATURE    + " INT, "              // Forecast Temp Column
                     + COLUMN_HUMIDITY       + " INT, "              // Forecast Humidity Column

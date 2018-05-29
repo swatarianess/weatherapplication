@@ -14,7 +14,6 @@ import com.stetal.weatherassignment.R;
 import com.stetal.weatherassignment.database.SqliteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WeatherForecastActivity extends FragmentActivity {
 
@@ -24,7 +23,6 @@ public class WeatherForecastActivity extends FragmentActivity {
     private SqliteDatabase mDataSource;
     private final String TAG = "ForecastActivity";
 
-    private ArrayList<Fragment> pagerFragments;
     private ArrayList<String> cityNames = new ArrayList<>();
 
     @SuppressLint("NewApi")
@@ -40,37 +38,27 @@ public class WeatherForecastActivity extends FragmentActivity {
         setContentView(R.layout.weatherdetailview);
         mPager = findViewById(R.id.weatherDetailViewPager);
 
-        mPagerAdapter = new WeatherDetailSlidePagerAdapter(getSupportFragmentManager(), pagerFragments);
+        mPagerAdapter = new WeatherDetailSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
     }
 
     private class WeatherDetailSlidePagerAdapter extends FragmentStatePagerAdapter {
         private final String TAG = "ForecastPagerAdapter";
-        private List<Fragment> pagerItems;
 
-
-        public WeatherDetailSlidePagerAdapter(FragmentManager fm, List<Fragment> pagerItems) {
+        public WeatherDetailSlidePagerAdapter(FragmentManager fm) {
             super(fm);
-            this.pagerItems = pagerItems;
         }
 
         @Override
         public Fragment getItem(int position) {
-            Log.i(TAG, "getItem Position: " + position);
             WeatherForecastPageFragment wPageFragment = new WeatherForecastPageFragment();
-            Bundle b = new Bundle();
-            b.putStringArray("CITY_NAME_ARRAY", cityNames.toArray(new String[]{}));
-            wPageFragment.setArguments(b);
             wPageFragment.setCityName(cityNames.get(position));
+
             return wPageFragment;
 
         }

@@ -1,29 +1,32 @@
 package com.stetal.weatherassignment.forecastRecycler;
 
 import android.graphics.Typeface;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.stetal.weatherassignment.FontAwesome;
 import com.stetal.weatherassignment.R;
 import com.stetal.weatherassignment.database.model.ForecastSchema;
-import com.stetal.weatherassignment.util.RemoveClickListener;
+import com.thefinestartist.finestwebview.FinestWebView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecyclerAdapter.RecyclerItemViewHolder> {
 
+    private String cityName;
     private ArrayList<ForecastSchema> myList;
-    private RemoveClickListener mListener;
+    private final String TAG = "ForecastRAdapter";
 
     public ForecastRecyclerAdapter(ArrayList<ForecastSchema> myList) {
         this.myList = myList;
-        this.mListener = null;
+        Log.d(TAG, "myList: " + myList.toString());
     }
 
     @Override
@@ -35,11 +38,15 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
     @Override
     public void onBindViewHolder(RecyclerItemViewHolder holder, int position) {
         ForecastSchema item = myList.get(position);
-        long expiry = item.getTimestamp();
+        SimpleDateFormat sdfDayOfWeek = new SimpleDateFormat("EEEE", Locale.getDefault());  //
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM", Locale.getDefault());  //
+        long timestamp = item.getTimestamp();
 
         holder.forecastDescription.setText(item.getDescription());
-        holder.forecastTemperature.setText(String.format("Temp: %d", item.getTemperature()));
+        holder.forecastTemperature.setText(String.format(Locale.getDefault(), "Temp: %d", item.getTemperature()));
 
+        holder.forecastDayOfWeek.setText(String.format(Locale.getDefault(), "Date: %s", sdfDayOfWeek.format(timestamp)));
+        holder.forecastDate.setText(String.format(Locale.getDefault(), "Date: %s", sdfDate.format(timestamp)));
 
     }
 
@@ -61,9 +68,16 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
      * @param forecastList New set of data to add to Adapter
      */
     public void notifyData(ArrayList<ForecastSchema> forecastList) {
-        Log.d("notifyData ", myList.size() + "");
         this.myList = forecastList;
         notifyDataSetChanged();
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
 
@@ -76,20 +90,27 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         private final TextView forecastDescription;
         private final TextView forecastTemperature;
         private final FontAwesome weatherIconTextView;
-        private RelativeLayout mainLayout;
+        private ConstraintLayout mainLayout;
 
         RecyclerItemViewHolder(final View v) {
             super(v);
-            this.forecastDayOfWeek      = v.findViewById(R.id.WeatherForecastDay);
-            this.forecastDate           = v.findViewById(R.id.WeatherForecastDate);
-            this.forecastDescription    = v.findViewById(R.id.WeatherForecastDescription);
-            this.forecastTemperature    = v.findViewById(R.id.WeatherForecastTemperature);
-            this.weatherIconTextView    = v.findViewById(R.id.WeatherForecastIcon);
+            this.forecastDayOfWeek = v.findViewById(R.id.WeatherForecastDay);
+            this.forecastDate = v.findViewById(R.id.WeatherForecastDate);
+            this.forecastDescription = v.findViewById(R.id.WeatherForecastDescription);
+            this.forecastTemperature = v.findViewById(R.id.WeatherForecastTemperature);
+            this.weatherIconTextView = v.findViewById(R.id.WeatherForecastIcon);
+            this.mainLayout = v.findViewById(R.id.weatherForecastItemLayout);
 
             Typeface typeface = Typeface.createFromAsset(v.getContext().getAssets(), "weatherfont.ttf");
             this.weatherIconTextView.setTypeface(typeface);
-
-//            mainLayout.setOnClickListener(view -> Toast.makeText(view.getContext(), "Clicked: " + forecastTemperature.getText(), Toast.LENGTH_SHORT).show());
+            mainLayout.setOnClickListener(view -> new FinestWebView.Builder(view.getContext())
+                    .showIconMenu(true)
+                    .titleDefault("Weather")
+                    .showUrl(false)
+                    .gradientDivider(false)
+                    .webViewJavaScriptEnabled(true)
+                    .show("https://openweathermap.org/find?q=" + cityName)
+            );
         }
     }
 

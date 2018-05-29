@@ -41,7 +41,6 @@ public class SqliteDatabase extends SQLiteOpenHelper {
     }
 
 
-
     public long insertCity(FavouriteCitySchema city) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -171,7 +170,6 @@ public class SqliteDatabase extends SQLiteOpenHelper {
     }
 
 
-
     /**
      * Adds a single forecast to the forecast table
      *
@@ -201,13 +199,13 @@ public class SqliteDatabase extends SQLiteOpenHelper {
      *
      * @param forecastSchemaList The list of forecast for a city
      */
-    public void addForecast(List<ForecastSchema> forecastSchemaList){
+    public void addForecast(List<ForecastSchema> forecastSchemaList) {
         for (int i = 0; i < forecastSchemaList.size(); i++) {
             addForecast(forecastSchemaList.get(i));
         }
     }
 
-    public List<ForecastSchema> getForecasts(){
+    public List<ForecastSchema> getForecasts() {
         List<ForecastSchema> forecasts = new ArrayList<>();
 
         String selectionQuery = "SELECT * FROM "
@@ -236,7 +234,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         return forecasts;
     }
 
-    public List<ForecastSchema> getCityForecasts(String cityName){
+    public List<ForecastSchema> getCityForecasts(String cityName) {
         List<ForecastSchema> forecastSchemas = new ArrayList<>();
 
         String selectionQuery = "SELECT * FROM "
@@ -245,22 +243,21 @@ public class SqliteDatabase extends SQLiteOpenHelper {
                 + ForecastSchema.COLUMN_CITY_NAME
                 + " = \'"
                 + cityName
-                + "\'"
-                ;
+                + "\'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectionQuery, null);
 
-        if (cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 ForecastSchema forecast = new ForecastSchema();
                 forecast.setCityName(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_CITY_NAME)));
                 forecast.setDescription(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setHumidity(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setIconText(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setPressure(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setTemperature(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setTimestamp(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
+                forecast.setHumidity(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_HUMIDITY)));
+                forecast.setIconText(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_ICONTEXT)));
+                forecast.setPressure(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_PRESSURE)));
+                forecast.setTemperature(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_TEMPERATURE)));
+                forecast.setTimestamp(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_TIMESTAMP)));
 
                 forecastSchemas.add(forecast);
             } while (cursor.moveToNext());
@@ -289,7 +286,6 @@ public class SqliteDatabase extends SQLiteOpenHelper {
      */
     public void removeForecasts(String forecastCityName) {
         SQLiteDatabase db = this.getWritableDatabase();
-//        db.execSQL("DELETE FROM " + ForecastSchema.TABLE_NAME + " WHERE cityName IN " + forecastCityName);
         db.delete(ForecastSchema.TABLE_NAME, ForecastSchema.COLUMN_CITY_NAME + " IN (?) ", new String[]{forecastCityName});
         db.close();
     }

@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity
 
             //TODO: Make sure this works!
             List<ForecastSchema> dummyForecast = populateForecasts();
-//            dbh.addForecast(dummyForecast);
             for(ForecastSchema f : dummyForecast){
                 dbh.addForecast(f);
             }
@@ -225,36 +224,41 @@ public class MainActivity extends AppCompatActivity
 
     private List<ForecastSchema> populateForecasts() {
         ArrayList<ForecastSchema> forecastSchemasList = new ArrayList<>();
+        long currentTime = Calendar.getInstance().getTime().getTime();
 
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Sunny", 20L, 15, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Rainy", 13L, 18, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Thunder", 8L, 80, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Sunny", 20L, 15, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Rainy", 13L, 18, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Thunder", 8L, 80, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Thunder", 27, 40, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Sunny", 23, 46, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Rain", 22, 80, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Thunder", 27, 40, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Sunny", 23, 46, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Berlin", "Rain", 22, 80, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 12, 22, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Cloudy", 19, 33, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 29, 44, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 12, 22, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Cloudy", 19, 33, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 29, 44, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 5, 55, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 2, 22, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 8, 1, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 5, 55, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 2, 22, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 8, 1, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Cloudy", 10, 33, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Sunny", 12, 88, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Thunder", 32, 44, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Cloudy", 10L, 33L, 2L, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Sunny", 12L, 88L, 2L, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Tokyo", "Thunder", 32L, 44L, 2L, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Cloudy", 33, 55, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 47, 66, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 40, 77, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Cloudy", 33, 55, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 47, 66, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 40, 77, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Sunny", 18, 15, 2, "something", Calendar.getInstance().getTime().getTime()));
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Cloudy", 20, 10, 2, "something", Calendar.getInstance().getTime().getTime() + 24 * 60 * 60 * 1000));
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Thunder", 22, 0, 2, "something", Calendar.getInstance().getTime().getTime() + 2 * 24 * 60 * 60 * 1000));
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Sunny", 18, 15, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Cloudy", 20, 10, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Thunder", 22, 0, 2, "something", currentTime + dayToMiliseconds(2)));
 
         return forecastSchemasList;
+    }
+
+    private Long dayToMiliseconds(int days){
+        return (long) (days * 24 * 60 * 60 * 1000);
     }
 
 }

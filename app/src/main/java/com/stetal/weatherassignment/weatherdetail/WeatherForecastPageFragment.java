@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +31,12 @@ public class WeatherForecastPageFragment extends Fragment {
         final View v = inflater.inflate(R.layout.weatherdetail_fragmentview, container, false);
         mForecastFragmentRecyclerView = v.findViewById(R.id.WeatherForecastFragmentRecyclerView);
         TextView forecastCityNameTextView = v.findViewById(R.id.weatherForecastFragmentCityName);
-
         forecastCityNameTextView.setText(cityName);
-        Log.i(TAG, "onCreateView: " + cityName);
 
-        mDatasource = new SqliteDatabase(getActivity().getApplicationContext());
+        mDatasource = new SqliteDatabase(container.getContext());
         cityForecastList.addAll(mDatasource.getCityForecasts(cityName));
-        Log.d(TAG, "onCreateView: " + cityForecastList.toString());
         mRecyclerAdapter = new ForecastRecyclerAdapter(cityForecastList);
+        mRecyclerAdapter.setCityName(cityName);
 
 
         mForecastFragmentRecyclerView.setAdapter(mRecyclerAdapter);
