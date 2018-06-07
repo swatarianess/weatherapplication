@@ -69,10 +69,10 @@ public class Function {
 
     public static class placeIdTask extends AsyncTask<String, Void, JSONObject> {
 
-        public AsyncResponse delegate = null;//Call back interface
+        public AsyncResponse delegate; //Call back interface
 
         public placeIdTask(AsyncResponse asyncResponse) {
-            delegate = asyncResponse;//Assigning call back interfacethrough constructor
+            delegate = asyncResponse;//Assigning call back interface through constructor
         }
 
         @Override
@@ -97,10 +97,9 @@ public class Function {
                     JSONObject main = json.getJSONObject("main");
                     DateFormat df = DateFormat.getDateTimeInstance();
 
-
                     String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
                     String description = details.getString("description").toUpperCase(Locale.US);
-                    String temperature = String.format("%.2f", main.getDouble("temp")) + "°";
+                    String temperature = String.format(Locale.getDefault(), "%.2f", main.getDouble("temp")) + "°";
                     String humidity = main.getString("humidity") + "%";
                     String pressure = main.getString("pressure") + " hPa";
                     String updatedOn = df.format(new Date(json.getLong("dt") * 1000));
@@ -131,7 +130,7 @@ public class Function {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connection.getInputStream()));
 
-            StringBuffer json = new StringBuffer(1024);
+            StringBuilder json = new StringBuilder(1024);
             String tmp;
             while ((tmp = reader.readLine()) != null)
                 json.append(tmp).append("\n");

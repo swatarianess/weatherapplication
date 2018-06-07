@@ -3,6 +3,7 @@ package com.stetal.weatherassignment.database;
 import android.content.Context;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -10,7 +11,6 @@ import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,21 +18,20 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(AndroidJUnit4.class)
+@SmallTest
 public class DatabaseInstrumentedTest {
 
     private SqliteDatabase mDataSource;
     private FavouriteCitySchema ams = new FavouriteCitySchema( "Amsterdam", "Netherlands", 1500555555L);
     private FavouriteCitySchema tok = new FavouriteCitySchema( "Tokyo", "Japan", 1500555555L);
 
-    @Test
-    public void onCreate() {
-    }
-
     @Before
     public void setUp(){
         Context appContext = InstrumentationRegistry.getTargetContext();
         mDataSource = new SqliteDatabase(appContext);
-        mDataSource.getAllSavedCities();
+        if (mDataSource.getAllSavedCities().size() > 0) {
+            mDataSource.deleteTable(FavouriteCitySchema.TABLE_NAME);
+        }
         mDataSource.insertCity(ams);
     }
 
@@ -48,13 +47,11 @@ public class DatabaseInstrumentedTest {
         assertNotEquals(0,mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
     }
 
-    @Ignore
+    @Test
     public void getSavedCity() {
+        assertNotEquals(0,mDataSource.getAllSavedCities().size());
     }
 
-    @Ignore
-    public void getAllSavedCities() {
-    }
 
     @Test
     public void getSavedCityCount() {

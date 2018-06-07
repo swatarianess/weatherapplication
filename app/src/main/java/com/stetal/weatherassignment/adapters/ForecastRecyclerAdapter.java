@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.forecastRecycler;
+package com.stetal.weatherassignment.adapters;
 
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;

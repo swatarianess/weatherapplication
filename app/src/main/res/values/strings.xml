@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name" translatable="false">WeatherAssignment</string>
+    <string name="app_name">WeatherAssignment</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
@@ -25,7 +25,7 @@
     </string>
 
     <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_default_display_name" translatable="false">John Smith</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -40,7 +40,7 @@
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
+    <string name="pref_header_data_sync">Data and sync</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
@@ -94,4 +94,5 @@
     <string name="saved_cities">Saved Cities</string>
     <string name="title_activity_city_search">Add City</string>
     <string name="search_city">Search City</string>
+    <string name="open_weather_maps_app_id" translatable="false">ccda926182a87ffb5ba759cacd9c0f43</string>
 </resources>

@@ -55,7 +55,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         return id;
     }
 
-    public void insertCity(List<FavouriteCitySchema> cities) {
+    public void insertCities(List<FavouriteCitySchema> cities) {
         SQLiteDatabase db = this.getWritableDatabase();
         for (int i = 0; i < cities.size(); i++) {
             ContentValues values = new ContentValues();
@@ -90,36 +90,33 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         return null;
     }
 
-    public FavouriteCitySchema getSavedCity(String query) {
+    public List<FavouriteCitySchema> getSavedCity(String query) {
+        List<FavouriteCitySchema> result = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        FavouriteCitySchema favouriteCitySchema;
-//        Cursor cursor = db.query(FavouriteCitySchema.TABLE_NAME,
-//                new String[]{FavouriteCitySchema.COLUMN_CITY_NAME, FavouriteCitySchema.COLUMN_CITY_COUNTRY, FavouriteCitySchema.COLUMN_TIMESTAMP},
-//                FavouriteCitySchema.COLUMN_CITY_NAME + " = ?",
-//                new String[]{String.valueOf(query)}, null, null, null, null);
 
         String selectionQuery = "SELECT * FROM "
-                + ForecastSchema.TABLE_NAME
+                + FavouriteCitySchema.TABLE_NAME
                 + " WHERE "
-                + ForecastSchema.COLUMN_CITY_NAME
-                + " LIKE \'"
+                + FavouriteCitySchema.COLUMN_CITY_NAME
+                + " like '%"
                 + query
-                + "\'";
+                + "%'";
 
         Cursor cursor = db.rawQuery(selectionQuery, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            favouriteCitySchema = new FavouriteCitySchema(
-                    cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)),
-                    cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)),
-                    cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP))
-            );
-            cursor.close();
-            return favouriteCitySchema;
+        if (cursor.moveToFirst()){
+            do {
+                FavouriteCitySchema city = new FavouriteCitySchema();
+                city.setCountry(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)));
+                city.setName(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)));
+                city.setTimestamp(cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP)));
+                result.add(city);
+            }while (cursor.moveToNext());
         }
-
+        cursor.close();
         db.close();
-        return null;
+
+        return result;
     }
 
     public List<FavouriteCitySchema> getAllSavedCities() {

@@ -1,4 +1,4 @@
-package com.stetal.weatherassignment.citySelection;
+package com.stetal.weatherassignment.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +49,6 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         holder.cityNameTextView.setText(String.format("%s, %s",item.getName(),item.getCountry()));
         holder.lastUpdatedTextView.setText(String.format("Updated: %s", DateUtils.getRelativeTimeSpanString(expiry)));
 
-//        String hexWeatherIcon = item.getCurrentWeatherIcon().replace("&#x","").replace(";","");
         String hexWeatherIcon = "&#xf022;".replace("&#x","").replace(";","");
         long valLong = Long.parseLong(hexWeatherIcon,16);
         holder.weatherIconTextView.setText(String.valueOf((char) valLong));

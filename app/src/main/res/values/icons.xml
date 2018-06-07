@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="wi_cloud">&#xf041;</string>
-    <string name="wi_cloudy">&#xf013;</string>
-    <string name="wi_cloudy_gusts">&#xf011;</string>
-    <string name="wi_cloudy_windy">&#xf012;</string>
-    <string name="wi_fog">&#xf014;</string>
-    <string name="wi_hail">&#xf015;</string>
-    <string name="wi_rain">&#xf019;</string>
-    <string name="wi_rain_mix">&#xf017;</string>
+    <string name="wi_cloud" translatable="false">&#xf041;</string>
+    <string name="wi_cloudy" translatable="false">&#xf013;</string>
+    <string name="wi_cloudy_gusts" translatable="false">&#xf011;</string>
+    <string name="wi_cloudy_windy" translatable="false">&#xf012;</string>
+    <string name="wi_fog" translatable="false">&#xf014;</string>
+    <string name="wi_hail" translatable="false">&#xf015;</string>
+    <string name="wi_rain" translatable="false">&#xf019;</string>
+    <string name="wi_rain_mix" translatable="false">&#xf017;</string>
 </resources>

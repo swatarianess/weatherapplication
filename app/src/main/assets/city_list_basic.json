@@ -1,0 +1,38 @@
+[
+  {
+    "id": 5855070,
+    "name": "Ewa Gentry",
+    "country": "US",
+    "coord": {
+      "lon": -158.030823,
+      "lat": 21.34417
+    }
+  },
+  {
+    "id": 5855927,
+    "name": "Hilo",
+    "country": "US",
+    "coord": {
+      "lon": -155.089996,
+      "lat": 19.729719
+    }
+  },
+  {
+    "id": 6332439,
+    "name": "Alafaya",
+    "country": "US",
+    "coord": {
+      "lon": -81.211403,
+      "lat": 28.5641
+    }
+  },
+  {
+    "id": 6941080,
+    "name": "Fort Bragg",
+    "country": "US",
+    "coord": {
+      "lon": -79.006027,
+      "lat": 35.139
+    }
+  }
+]

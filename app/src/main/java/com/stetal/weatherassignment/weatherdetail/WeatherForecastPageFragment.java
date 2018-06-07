@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.stetal.weatherassignment.R;
 import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.ForecastSchema;
-import com.stetal.weatherassignment.forecastRecycler.ForecastRecyclerAdapter;
+import com.stetal.weatherassignment.adapters.ForecastRecyclerAdapter;
 
 import java.util.ArrayList;
 

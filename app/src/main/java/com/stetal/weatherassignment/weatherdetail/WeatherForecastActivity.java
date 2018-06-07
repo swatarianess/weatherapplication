@@ -1,6 +1,7 @@
 package com.stetal.weatherassignment.weatherdetail;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 import com.stetal.weatherassignment.R;
 import com.stetal.weatherassignment.database.SqliteDatabase;
@@ -29,19 +29,34 @@ public class WeatherForecastActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Retrieving information from the database
         mDataSource = new SqliteDatabase(this);
         NUM_PAGES = mDataSource.getAllSavedCities().size();
-        Log.i(TAG, "#Pages: " + NUM_PAGES);
-
         mDataSource.getAllSavedCities().forEach( e -> cityNames.add(e.getName()));
-        Log.i(TAG, "savedCities: " + cityNames.toString());
+
+        //Getting the reference to the page from the layout xml
         setContentView(R.layout.weatherdetailview);
         mPager = findViewById(R.id.weatherDetailViewPager);
 
+        //Set an adapter
         mPagerAdapter = new WeatherDetailSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+
+        //Gets data sent to this Activity. Parses the item clicked in the RecyclerView
+        //Sets the current viewPage to the city selected previously
+        Intent intent = getIntent();
+        String selectedCityName = intent.getStringExtra("CITY_NAME");
+        mPager.setCurrentItem(cityNames.indexOf(selectedCityName.split(",")[0]));
+
+        //Splits the city name into 2, because it normally includes the Country too
+        //For example; "Berlin, Germany"
+        //Splitting will just return Berlin, which is one of the viewpager titles.
     }
 
+    /**
+     * Code that is executed when the back button is pressed.
+     */
     @Override
     public void onBackPressed() {
             super.onBackPressed();
