@@ -16,7 +16,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteCityTextView"
-        android:layout_width="match_parent"
+        android:layout_width="311dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/darker_gray"
         android:imeOptions="actionSearch"

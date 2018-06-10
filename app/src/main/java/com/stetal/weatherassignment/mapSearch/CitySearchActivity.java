@@ -9,13 +9,14 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
@@ -24,18 +25,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.stetal.weatherassignment.R;
+import com.stetal.weatherassignment.adapters.SuggestionAdapter;
 import com.stetal.weatherassignment.database.model.City;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CitySearchActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
@@ -50,6 +42,10 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.activity_city_search);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -60,11 +56,14 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
         acSearchTextView.setEnabled(false);
 
         acSearchTextView.setThreshold(4);
+
         acSearchTextView.setOnItemClickListener((aView, view, pos, d) -> {
+            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
 
             City selected = (City) aView.getAdapter().getItem(pos);
-            Toast.makeText(this, "Clicked: " + selected.getId(), Toast.LENGTH_SHORT).show();
             Log.i(TAG, "cityClicked: " + selected.getId() + ": " + selected.toString());
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(selected.getLatitude(), selected.getLongitude()), DEFAULT_ZOOM));
         });
 
@@ -95,13 +94,8 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
 
         Handler h = new Handler();
         h.post(() -> {
-            List<String> theList = new ArrayList<>(Arrays.asList("Amsterdam", "Hong Kong", "Brisbane", "Something", "Zimbabkk", "Cairo"));
-//            ArrayAdapter cityAdapter = new ArrayAdapter<>(CitySearchActivity.this, android.R.layout.select_dialog_item, theList);
-
-            ArrayList<City> cityArrayList = loadJSONFromAsset(this);
-            ArrayAdapter<City> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cityArrayList);
-
-            acSearchTextView.setAdapter(adapter);
+            SuggestionAdapter suggestionAdapter = new SuggestionAdapter(this);
+            acSearchTextView.setAdapter(suggestionAdapter);
         });
         acSearchTextView.setEnabled(true);
     }
@@ -224,33 +218,5 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
-
-    private static ArrayList<City> loadJSONFromAsset(Context context) {
-        ArrayList<City> cityList = new ArrayList<>();
-
-        try {
-            InputStream is = context.getAssets().open("city_list.json");
-//            InputStream is = context.getAssets().open("city_list_basic.json");
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-
-            reader.beginArray();
-
-            Gson gson = new GsonBuilder().create();
-
-            while (reader.hasNext()) {
-                City cityJson = gson.fromJson(reader, City.class);
-                cityList.add(cityJson);
-            }
-            reader.endArray();
-            reader.close();
-
-        } catch (IOException ignored) {
-
-        }
-
-        return cityList;
-    }
-
 
 }
