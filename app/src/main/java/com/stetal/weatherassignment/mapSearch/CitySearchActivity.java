@@ -25,9 +25,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.stetal.weatherassignment.R;
 import com.stetal.weatherassignment.adapters.SuggestionAdapter;
+import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.City;
+import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CitySearchActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
@@ -36,12 +43,16 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
     private static final int DEFAULT_ZOOM = 10;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final String TAG = "CitySearchActivity";
+    SqliteDatabase mDataSource;
+
+    private List<FavouriteCitySchema> citySchemaList = new ArrayList<>();
 
     private AutoCompleteTextView acSearchTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataSource = new SqliteDatabase(this);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -51,6 +62,8 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+//        citySchemaList.addAll(mDataSource.getAllSavedCities());
 
         acSearchTextView = findViewById(R.id.autoCompleteCityTextView);
         acSearchTextView.setEnabled(false);
@@ -62,9 +75,12 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
 
             City selected = (City) aView.getAdapter().getItem(pos);
-            Log.i(TAG, "cityClicked: " + selected.getId() + ": " + selected.toString());
+            Log.i(TAG, "selected: " + selected);
+            LatLng selectedCityLocation = new LatLng(selected.getLatitude(), selected.getLongitude());
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(selected.getLatitude(), selected.getLongitude()), DEFAULT_ZOOM));
+            mMap.addMarker(new MarkerOptions().position(selectedCityLocation).title(selected.getName()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedCityLocation, DEFAULT_ZOOM));
+            mDataSource.insertCity(new FavouriteCitySchema((long) selected.getId(), selected.getName(), selected.getCountry(), Calendar.getInstance().getTime().getTime()));
         });
 
     }
@@ -98,6 +114,8 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             acSearchTextView.setAdapter(suggestionAdapter);
         });
         acSearchTextView.setEnabled(true);
+
+
     }
 
     @Override
@@ -128,6 +146,12 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
+    /**
+     * Checks if the location service is enabled
+     *
+     * @param context The context which the method is in
+     * @return Returns if location is enabled
+     */
     public static boolean isLocationEnabled(Context context) {
         int locationMode;
         try {
@@ -137,10 +161,7 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             e.printStackTrace();
             return false;
         }
-
         return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-
     }
 
     /**

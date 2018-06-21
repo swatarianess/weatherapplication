@@ -29,6 +29,8 @@ public class WeatherForecastActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+
 
         //Retrieving information from the database
         mDataSource = new SqliteDatabase(this);
@@ -41,17 +43,18 @@ public class WeatherForecastActivity extends FragmentActivity {
 
         //Set an adapter
         mPagerAdapter = new WeatherDetailSlidePagerAdapter(getSupportFragmentManager());
+
         mPager.setAdapter(mPagerAdapter);
 
         //Gets data sent to this Activity. Parses the item clicked in the RecyclerView
         //Sets the current viewPage to the city selected previously
-        Intent intent = getIntent();
         String selectedCityName = intent.getStringExtra("CITY_NAME");
         mPager.setCurrentItem(cityNames.indexOf(selectedCityName.split(",")[0]));
 
         //Splits the city name into 2, because it normally includes the Country too
         //For example; "Berlin, Germany"
         //Splitting will just return Berlin, which is one of the viewpager titles.
+
     }
 
     /**
@@ -73,7 +76,6 @@ public class WeatherForecastActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             WeatherForecastPageFragment wPageFragment = new WeatherForecastPageFragment();
             wPageFragment.setCityName(cityNames.get(position));
-
             return wPageFragment;
 
         }

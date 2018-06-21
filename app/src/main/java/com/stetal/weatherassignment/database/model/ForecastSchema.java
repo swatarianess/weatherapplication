@@ -1,9 +1,12 @@
 package com.stetal.weatherassignment.database.model;
 
+import android.support.annotation.Nullable;
+
 public class ForecastSchema {
 
     public static final String TABLE_NAME           = "Forecasts";
     public static final String COLUMN_ID            = "_id";
+    public static final String COLUMN_CITY_ID       = "cityID";
     public static final String COLUMN_CITY_NAME     = "cityName";
     public static final String COLUMN_DESCRIPTION   = "description";
     public static final String COLUMN_TEMPERATURE   = "temperature";
@@ -13,6 +16,7 @@ public class ForecastSchema {
     public static final String COLUMN_TIMESTAMP     = "timestamp";
 
     private String cityName;
+    private long cityID;
     private String description;
     private long temperature;
     private long humidity;
@@ -24,6 +28,7 @@ public class ForecastSchema {
             "CREATE TABLE " + TABLE_NAME
                     + "("
                     + " _id INTEGER PRIMARY KEY AUTOINCREMENT, "    // ID Column
+                    + COLUMN_CITY_ID        + " INT, "
                     + COLUMN_CITY_NAME      + " TEXT, "             // Forecast City Column
                     + COLUMN_DESCRIPTION    + " TEXT, "             // Forecast Desc Column
                     + COLUMN_TEMPERATURE    + " INT, "              // Forecast Temp Column
@@ -35,7 +40,8 @@ public class ForecastSchema {
 
     public ForecastSchema() {}
 
-    public ForecastSchema(String cityName, String description, long temperature, long humidity, long pressure, String iconText, long timestamp) {
+    public ForecastSchema(@Nullable long cityID, String cityName, String description, long temperature, long humidity, long pressure, String iconText, long timestamp) {
+        this.cityID = cityID;
         this.cityName = cityName;
         this.description = description;
         this.temperature = temperature;
@@ -43,6 +49,7 @@ public class ForecastSchema {
         this.pressure = pressure;
         this.iconText = iconText;
         this.timestamp = timestamp;
+
     }
 
     public String getCityName() {
@@ -101,13 +108,23 @@ public class ForecastSchema {
         this.timestamp = timestamp;
     }
 
+    public long getCityID() {
+        return cityID;
+    }
+
+    public void setCityID(long cityID) {
+        this.cityID = cityID;
+    }
+
     @Override
     public String toString() {
         return "ForecastSchema{" +
                 "cityName='" + cityName + '\'' +
+                ", cityID='" + cityID + '\'' +
                 ", description='" + description + '\'' +
                 ", temperature='" + temperature + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
     }
+
 }

@@ -1,5 +1,7 @@
 package com.stetal.weatherassignment.suggestions;
 
+import android.util.Log;
+
 import com.stetal.weatherassignment.database.model.City;
 
 import org.json.JSONArray;
@@ -18,8 +20,13 @@ public class MainRequest {
 
     private final static String TAG = "MainRequest";
 
+    @SuppressWarnings("FieldCanBeLocal")
     private static String urlRequest = "https://search-suggestions-3b32iesczvnfcxlwjjjy7r3y5u.eu-west-2.es.amazonaws.com/name/_search?q=";
 
+    /**
+     * @param myURL The url to create a url connection to
+     * @return Returns a json in String format from the server
+     */
     private static String callURL(String myURL) {
         StringBuilder sb = new StringBuilder();
         HttpURLConnection urlConn;
@@ -28,7 +35,7 @@ public class MainRequest {
             URL url = new URL(myURL);
             urlConn = (HttpURLConnection) url.openConnection();
             if (urlConn != null)
-                urlConn.setReadTimeout(5 * 1000);
+                urlConn.setReadTimeout(2 * 1000);
             if (urlConn != null && urlConn.getInputStream() != null) {
                 in = new InputStreamReader(urlConn.getInputStream(),
                         Charset.defaultCharset());
@@ -49,6 +56,11 @@ public class MainRequest {
         return sb.toString();
     }
 
+    /**
+     * @param query The query to send to the server
+     * @return Returns a list of suggestions based on the query
+     * @throws JSONException Thrown when there is a problem with the format of the Json returned
+     */
     public static List<City> retrieveSuggestions(String query) throws JSONException {
         List<City> results = new ArrayList<>();
 
@@ -67,7 +79,7 @@ public class MainRequest {
 
             results.add(new City(source));
         }
-        System.out.println("Query : " + jsonString);
+        Log.i(TAG, "retrieveSuggestions#Query: " + jsonString);
         return results;
     }
 }

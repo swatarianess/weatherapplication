@@ -12,6 +12,7 @@ import com.stetal.weatherassignment.database.model.ForecastSchema;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("UnusedReturnValue")
 public class SqliteDatabase extends SQLiteOpenHelper {
 
     //Database Vars
@@ -45,6 +46,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(FavouriteCitySchema.COLUMN_CITY_ID, city.getRemoteID());
         values.put(FavouriteCitySchema.COLUMN_CITY_NAME, city.getName());
         values.put(FavouriteCitySchema.COLUMN_CITY_COUNTRY, city.getCountry());
         values.put(FavouriteCitySchema.COLUMN_TIMESTAMP, city.getTimestamp());
@@ -60,6 +62,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         for (int i = 0; i < cities.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(FavouriteCitySchema.COLUMN_CITY_NAME, cities.get(i).getName());
+            values.put(FavouriteCitySchema.COLUMN_CITY_ID, cities.get(i).getRemoteID());
             values.put(FavouriteCitySchema.COLUMN_CITY_COUNTRY, cities.get(i).getCountry());
             values.put(FavouriteCitySchema.COLUMN_TIMESTAMP, cities.get(i).getTimestamp());
             db.insert(FavouriteCitySchema.TABLE_NAME, null, values);
@@ -68,16 +71,21 @@ public class SqliteDatabase extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * @param id The city id according to openweathermap api
+     * @return Returns a city object
+     */
     public FavouriteCitySchema getSavedCity(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         FavouriteCitySchema favouriteCitySchema;
         Cursor cursor = db.query(FavouriteCitySchema.TABLE_NAME,
                 new String[]{FavouriteCitySchema.COLUMN_CITY_NAME, FavouriteCitySchema.COLUMN_CITY_COUNTRY, FavouriteCitySchema.COLUMN_TIMESTAMP},
-                FavouriteCitySchema.COLUMN_ID + "= ?",
+                FavouriteCitySchema.COLUMN_CITY_ID + "= ?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             favouriteCitySchema = new FavouriteCitySchema(
+                    cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_ID)),
                     cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)),
                     cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)),
                     cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP))
@@ -107,6 +115,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             do {
                 FavouriteCitySchema city = new FavouriteCitySchema();
+                city.setRemoteID(cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_ID)));
                 city.setCountry(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)));
                 city.setName(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)));
                 city.setTimestamp(cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP)));
@@ -131,6 +140,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 FavouriteCitySchema city = new FavouriteCitySchema();
+                city.setRemoteID(cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_ID)));
                 city.setCountry(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_COUNTRY)));
                 city.setName(cursor.getString(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_CITY_NAME)));
                 city.setTimestamp(cursor.getLong(cursor.getColumnIndex(FavouriteCitySchema.COLUMN_TIMESTAMP)));
@@ -210,6 +220,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(ForecastSchema.COLUMN_CITY_NAME, forecast.getCityName());
+        values.put(ForecastSchema.COLUMN_CITY_ID, forecast.getCityID());
         values.put(ForecastSchema.COLUMN_DESCRIPTION, forecast.getDescription());
         values.put(ForecastSchema.COLUMN_TEMPERATURE, forecast.getTemperature());
         values.put(ForecastSchema.COLUMN_HUMIDITY, forecast.getHumidity());
@@ -247,13 +258,13 @@ public class SqliteDatabase extends SQLiteOpenHelper {
             do {
                 ForecastSchema forecast = new ForecastSchema();
                 forecast.setCityName(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_CITY_NAME)));
+                forecast.setCityID(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_CITY_ID)));
                 forecast.setDescription(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setHumidity(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setIconText(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setPressure(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setTemperature(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-                forecast.setTimestamp(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
-
+                forecast.setHumidity(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_HUMIDITY)));
+                forecast.setIconText(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_ICONTEXT)));
+                forecast.setPressure(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_PRESSURE)));
+                forecast.setTemperature(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_TEMPERATURE)));
+                forecast.setTimestamp(cursor.getInt(cursor.getColumnIndex(ForecastSchema.COLUMN_TIMESTAMP)));
                 forecasts.add(forecast);
             } while (cursor.moveToNext());
         }
@@ -281,6 +292,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
             do {
                 ForecastSchema forecast = new ForecastSchema();
                 forecast.setCityName(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_CITY_NAME)));
+                forecast.setCityID(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_CITY_ID)));
                 forecast.setDescription(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_DESCRIPTION)));
                 forecast.setHumidity(cursor.getLong(cursor.getColumnIndex(ForecastSchema.COLUMN_HUMIDITY)));
                 forecast.setIconText(cursor.getString(cursor.getColumnIndex(ForecastSchema.COLUMN_ICONTEXT)));

@@ -52,6 +52,14 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         String hexWeatherIcon = "&#xf022;".replace("&#x","").replace(";","");
         long valLong = Long.parseLong(hexWeatherIcon,16);
         holder.weatherIconTextView.setText(String.valueOf((char) valLong));
+
+        holder.mainLayout.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, WeatherForecastActivity.class);
+            intent.putExtra("CITY_NAME", holder.cityNameTextView.getText().toString());
+            intent.putExtra("CITY_REMOTE_ID", item.getRemoteID());
+            context.startActivity(intent);
+        });
     }
 
     /**
@@ -106,13 +114,6 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
             Typeface typeface = Typeface.createFromAsset(parent.getContext().getAssets(), "weatherfont.ttf");
             this.weatherIconTextView.setTypeface(typeface);
-
-            mainLayout.setOnClickListener(view -> {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, WeatherForecastActivity.class);
-                intent.putExtra("CITY_NAME", cityNameTextView.getText().toString());
-                context.startActivity(intent);
-            });
         }
     }
 

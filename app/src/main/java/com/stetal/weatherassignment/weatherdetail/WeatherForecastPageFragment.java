@@ -24,6 +24,7 @@ public class WeatherForecastPageFragment extends Fragment {
     private ForecastRecyclerAdapter mRecyclerAdapter;
     private SqliteDatabase mDatasource;
     private String cityName = "";
+    private long cityID;
 
 
     @Override
@@ -36,6 +37,8 @@ public class WeatherForecastPageFragment extends Fragment {
         mDatasource = new SqliteDatabase(container.getContext());
         cityForecastList.addAll(mDatasource.getCityForecasts(cityName));
         mRecyclerAdapter = new ForecastRecyclerAdapter(cityForecastList);
+
+        mRecyclerAdapter.setCityID(cityID);
         mRecyclerAdapter.setCityName(cityName);
 
 
@@ -52,5 +55,9 @@ public class WeatherForecastPageFragment extends Fragment {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public void setCityID(long cityID) {
+        this.cityID = cityID;
     }
 }

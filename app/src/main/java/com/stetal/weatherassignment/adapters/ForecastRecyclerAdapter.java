@@ -21,12 +21,12 @@ import java.util.Locale;
 public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecyclerAdapter.RecyclerItemViewHolder> {
 
     private String cityName;
+    private long cityID;
     private ArrayList<ForecastSchema> myList;
     private final String TAG = "ForecastRAdapter";
 
     public ForecastRecyclerAdapter(ArrayList<ForecastSchema> myList) {
         this.myList = myList;
-        Log.d(TAG, "myList: " + myList.toString());
     }
 
     @Override
@@ -38,6 +38,8 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
     @Override
     public void onBindViewHolder(RecyclerItemViewHolder holder, int position) {
         ForecastSchema item = myList.get(position);
+        cityID = item.getCityID();
+
         SimpleDateFormat sdfDayOfWeek = new SimpleDateFormat("EEEE", Locale.getDefault());  //
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM", Locale.getDefault());  //
         long timestamp = item.getTimestamp();
@@ -47,6 +49,22 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
 
         holder.forecastDayOfWeek.setText(String.format(Locale.getDefault(), "Date: %s", sdfDayOfWeek.format(timestamp)));
         holder.forecastDate.setText(String.format(Locale.getDefault(), "Date: %s", sdfDate.format(timestamp)));
+
+        holder.mainLayout.setOnClickListener(view -> {
+                    new FinestWebView.Builder(view.getContext())
+                            .showIconMenu(true)
+                            .titleDefault(cityName)
+                            .showUrl(false)
+                            .gradientDivider(false)
+                            .webViewJavaScriptEnabled(true)
+                            .show("https://openweathermap.org/city/" + cityID);
+//                .show("https://openweathermap.org/find?q=" + cityName)
+
+                    Log.i(TAG, "onBindViewHolder: CITY_ID := " + cityID);
+                    Log.i(TAG, "onBindViewHolder: ITEM := " + item);
+                }
+        );
+
 
     }
 
@@ -80,6 +98,10 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         this.cityName = cityName;
     }
 
+    public void setCityID(long cityID) {
+        this.cityID = cityID;
+    }
+
 
     /**
      * Inner class that handles the ViewHolder of the item.
@@ -103,14 +125,6 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
 
             Typeface typeface = Typeface.createFromAsset(v.getContext().getAssets(), "weatherfont.ttf");
             this.weatherIconTextView.setTypeface(typeface);
-            mainLayout.setOnClickListener(view -> new FinestWebView.Builder(view.getContext())
-                    .showIconMenu(true)
-                    .titleDefault("Weather")
-                    .showUrl(false)
-                    .gradientDivider(false)
-                    .webViewJavaScriptEnabled(true)
-                    .show("https://openweathermap.org/find?q=" + cityName)
-            );
         }
     }
 

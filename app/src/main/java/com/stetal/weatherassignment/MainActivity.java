@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         mDataSource = new SqliteDatabase(this);
-        populateCityList();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -157,7 +156,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
-        
+
         return true;
     }
 
@@ -197,11 +196,20 @@ public class MainActivity extends AppCompatActivity
             SqliteDatabase dbh = new SqliteDatabase(this);
 
             //Todo: Remove inserting to db in next iteration
-            for (Pair<String, String> p : cityDummyData) {
-                dbh.insertCity(new FavouriteCitySchema(p.first, p.second, currentTime));
-            }
+//            for (Pair<String, String> p : cityDummyData) {
+//                dbh.insertCity(new FavouriteCitySchema(p.first, p.second, currentTime));
+//            }
 
-            //TODO: Make sure this works!
+            //Insert cities
+            dbh.insertCity(new FavouriteCitySchema(2759794, "Amsterdam", "Netherlands", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(2950159, "Berlin", "Germany", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(1275339, "Mumbai", "India", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(1277333, "Bangalore", "India", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(1850147, "Tokyo", "Japan", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(1816670, "Beijing", "China", currentTime));
+            dbh.insertCity(new FavouriteCitySchema(1819729, "Hong Kong", "China", currentTime));
+
+            //TODO: Remove for production.
             List<ForecastSchema> dummyForecast = populateForecasts();
             for (ForecastSchema f : dummyForecast) {
                 dbh.addForecast(f);
@@ -210,6 +218,7 @@ public class MainActivity extends AppCompatActivity
             Log.i("currentTime: ", String.valueOf(currentTime));
 
             Log.i("Saved Cities: ", dbh.getAllSavedCities().toString());
+            Toast.makeText(this, "Added Dummy Information\n Swipe to refresh list!", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.app_settings) {
             Toast.makeText(this, "Clicked Application Settings!", Toast.LENGTH_SHORT).show();
@@ -246,47 +255,37 @@ public class MainActivity extends AppCompatActivity
         mRecyclerAdapter.notifyData((ArrayList<FavouriteCitySchema>) mDataSource.getAllSavedCities());
     }
 
-    private void populateCityList() {
-        cityDummyData.add(new Pair<>("Amsterdam", "Netherlands"));
-        cityDummyData.add(new Pair<>("Berlin", "Germany"));
-        cityDummyData.add(new Pair<>("Mumbai", "India"));
-        cityDummyData.add(new Pair<>("Bangalore", "India"));
-        cityDummyData.add(new Pair<>("Tokyo", "Japan"));
-        cityDummyData.add(new Pair<>("Beijing", "China"));
-        cityDummyData.add(new Pair<>("Hong Kong", "China"));
-    }
-
     private List<ForecastSchema> populateForecasts() {
         ArrayList<ForecastSchema> forecastSchemasList = new ArrayList<>();
         long currentTime = Calendar.getInstance().getTime().getTime();
 
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Sunny", 20L, 15, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Rainy", 13L, 18, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Amsterdam", "Thunder", 8L, 80, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(2759794, "Amsterdam", "Sunny", 20L, 15, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(2759794, "Amsterdam", "Rainy", 13L, 18, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(2759794, "Amsterdam", "Thunder", 8L, 80, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Thunder", 27, 40, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Sunny", 23, 46, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Berlin", "Rain", 22, 80, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(2950159, "Berlin", "Thunder", 27, 40, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(2950159, "Berlin", "Sunny", 23, 46, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(2950159, "Berlin", "Rain", 22, 80, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 12, 22, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Cloudy", 19, 33, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Mumbai", "Sunny", 29, 44, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(1275339, "Mumbai", "Sunny", 12, 22, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(1275339, "Mumbai", "Cloudy", 19, 33, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(1275339, "Mumbai", "Sunny", 29, 44, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 5, 55, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 2, 22, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Bangalore", "Sunny", 8, 1, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(1277333, "Bangalore", "Sunny", 5, 55, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(1277333, "Bangalore", "Sunny", 2, 22, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(1277333, "Bangalore", "Sunny", 8, 1, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Cloudy", 10L, 33L, 2L, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Sunny", 12L, 88L, 2L, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Tokyo", "Thunder", 32L, 44L, 2L, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(1850147, "Tokyo", "Cloudy", 10L, 33L, 2L, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(1850147, "Tokyo", "Sunny", 12L, 88L, 2L, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(1850147, "Tokyo", "Thunder", 32L, 44L, 2L, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Cloudy", 33, 55, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 47, 66, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Beijing", "Sunny", 40, 77, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(1816670, "Beijing", "Cloudy", 33, 55, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(1816670, "Beijing", "Sunny", 47, 66, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(1816670, "Beijing", "Sunny", 40, 77, 2, "something", currentTime + dayToMiliseconds(2)));
 
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Sunny", 18, 15, 2, "something", currentTime));
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Cloudy", 20, 10, 2, "something", currentTime + dayToMiliseconds(1)));
-        forecastSchemasList.add(new ForecastSchema("Hong Kong", "Thunder", 22, 0, 2, "something", currentTime + dayToMiliseconds(2)));
+        forecastSchemasList.add(new ForecastSchema(1819729, "Hong Kong", "Sunny", 18, 15, 2, "something", currentTime));
+        forecastSchemasList.add(new ForecastSchema(1819729, "Hong Kong", "Cloudy", 20, 10, 2, "something", currentTime + dayToMiliseconds(1)));
+        forecastSchemasList.add(new ForecastSchema(1819729, "Hong Kong", "Thunder", 22, 0, 2, "something", currentTime + dayToMiliseconds(2)));
 
         return forecastSchemasList;
     }
