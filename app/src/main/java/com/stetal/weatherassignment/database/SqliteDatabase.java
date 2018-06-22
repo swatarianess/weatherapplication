@@ -51,7 +51,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         values.put(FavouriteCitySchema.COLUMN_CITY_COUNTRY, city.getCountry());
         values.put(FavouriteCitySchema.COLUMN_TIMESTAMP, city.getTimestamp());
 
-        long id = db.insert(FavouriteCitySchema.TABLE_NAME, null, values);
+        long id = db.insertWithOnConflict(FavouriteCitySchema.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_IGNORE);
 
         db.close();
         return id;
@@ -65,7 +65,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
             values.put(FavouriteCitySchema.COLUMN_CITY_ID, cities.get(i).getRemoteID());
             values.put(FavouriteCitySchema.COLUMN_CITY_COUNTRY, cities.get(i).getCountry());
             values.put(FavouriteCitySchema.COLUMN_TIMESTAMP, cities.get(i).getTimestamp());
-            db.insert(FavouriteCitySchema.TABLE_NAME, null, values);
+            db.insertWithOnConflict(FavouriteCitySchema.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_IGNORE);
         }
         db.close();
 

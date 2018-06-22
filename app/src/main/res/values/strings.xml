@@ -71,6 +71,10 @@
         <item>Kilometres per hour</item>
     </string-array>
 
+    <string-array name="list_preference_theme_type">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
 
     <string-array name="list_preference_entry_values">
         <item>1</item>

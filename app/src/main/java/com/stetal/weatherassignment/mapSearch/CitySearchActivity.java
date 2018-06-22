@@ -27,10 +27,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stetal.weatherassignment.R;
+import com.stetal.weatherassignment.RemoteFetch;
 import com.stetal.weatherassignment.adapters.SuggestionAdapter;
 import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.City;
 import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +85,16 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             mMap.addMarker(new MarkerOptions().position(selectedCityLocation).title(selected.getName()));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedCityLocation, DEFAULT_ZOOM));
             mDataSource.insertCity(new FavouriteCitySchema((long) selected.getId(), selected.getName(), selected.getCountry(), Calendar.getInstance().getTime().getTime()));
+
+            JSONObject cityForecasts = RemoteFetch.getJSON(this, (long) selected.getId());
+
+            Log.i(TAG, "onCreate: " + (cityForecasts != null ? cityForecasts.toString() : null));
+
+            try {
+                mDataSource.addForecast(RemoteFetch.parseForecasts(cityForecasts,selected));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         });
 
     }

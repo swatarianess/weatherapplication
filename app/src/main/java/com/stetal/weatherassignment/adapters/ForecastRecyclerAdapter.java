@@ -42,10 +42,10 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
 
         SimpleDateFormat sdfDayOfWeek = new SimpleDateFormat("EEEE", Locale.getDefault());  //
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM", Locale.getDefault());  //
-        long timestamp = item.getTimestamp();
+        long timestamp = item.getTimestamp() * 1000;
 
         holder.forecastDescription.setText(item.getDescription());
-        holder.forecastTemperature.setText(String.format(Locale.getDefault(), "Temp: %d", item.getTemperature()));
+        holder.forecastTemperature.setText(String.format(Locale.getDefault(), "Temp: %d", (item.getTemperature()- 273)));
 
         holder.forecastDayOfWeek.setText(String.format(Locale.getDefault(), "Date: %s", sdfDayOfWeek.format(timestamp)));
         holder.forecastDate.setText(String.format(Locale.getDefault(), "Date: %s", sdfDate.format(timestamp)));
@@ -58,7 +58,6 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
                             .gradientDivider(false)
                             .webViewJavaScriptEnabled(true)
                             .show("https://openweathermap.org/city/" + cityID);
-//                .show("https://openweathermap.org/find?q=" + cityName)
 
                     Log.i(TAG, "onBindViewHolder: CITY_ID := " + cityID);
                     Log.i(TAG, "onBindViewHolder: ITEM := " + item);

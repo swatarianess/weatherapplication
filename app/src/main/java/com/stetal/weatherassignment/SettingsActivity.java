@@ -20,7 +20,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -168,7 +167,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-//                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || WeatherPreferenceFragment.class.getName().equals(fragmentName);
@@ -277,7 +275,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preference buttonSim = findPreference("aboutPreference");
             buttonSim.setOnPreferenceClickListener((preference) -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    Toast.makeText(getContext(), "Clicked: " + preference.getKey(), Toast.LENGTH_SHORT).show();
                     createAboutDialog(getContext()).show();
                 }
                 return true;

@@ -18,7 +18,7 @@ public class FavouriteCitySchema {
             "CREATE TABLE " + TABLE_NAME
                     + "("
                     + " _id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + COLUMN_CITY_ID + " INT,"
+                    + COLUMN_CITY_ID + " INT UNIQUE,"
                     + COLUMN_CITY_COUNTRY + " TEXT,"
                     + COLUMN_CITY_NAME + " TEXT,"
                     + COLUMN_TIMESTAMP + " INT "
