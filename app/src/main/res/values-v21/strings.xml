@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cities">Cities</string>
+    <string name="current_location">Current Location</string>
+    <string name="settings">Settings</string>
+    <string name="application_settings">Application Settings</string>
+    <string name="application_name">Weather Application</string>
+    <string name="version001" translatable="false">Version 0.0.1</string>
+    <string name="searchbutton">searchButton</string>
+    <string name="saved_cities">Saved Cities</string>
+    <string name="search_city">Search City</string>
+</resources>

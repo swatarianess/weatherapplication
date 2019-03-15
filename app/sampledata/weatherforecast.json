@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "city_name": "Tokyo",
+      "city_country": "Japan",
+      "description": "Super Sunny",
+      "humidity": 10,
+      "pressure": 1.05554,
+      "icon_text": "&#xf041;",
+      "timestamp": 14587541258
+    },
+    {
+      "city_name": "Tokyo",
+      "city_country": "Japan",
+      "description": "",
+      "humidity": "",
+      "pressure": "",
+      "icon_text": "&#xf01c;",
+      "timestamp": 14587541258
+    },
+    {
+      "city_name": "Tokyo",
+      "city_country": "Japan",
+      "description": "",
+      "humidity": "",
+      "pressure": "",
+      "icon_text": "",
+      "timestamp": 14587541258
+    },
+    {
+      "city_name": "Amsterdam",
+      "city_country": "Netherlands",
+      "description": "",
+      "humidity": "",
+      "pressure": "",
+      "icon_text": "&#xf01c;",
+      "timestamp": 14587541258
+    },
+    {
+      "city_name": "Amsterdam",
+      "city_country": "Netherlands",
+      "description": "",
+      "humidity": "",
+      "pressure": "",
+      "icon_text": "&#xf013;",
+      "timestamp": 14587541258
+    },
+    {
+      "city_name": "Amsterdam",
+      "city_country": "Netherlands",
+      "description": "",
+      "humidity": "",
+      "pressure": "",
+      "icon_text": "",
+      "timestamp": 14587541258
+    }
+  ]
+}

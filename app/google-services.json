@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "980245100638",
+    "firebase_url": "https://weatherapplication-f7ad1.firebaseio.com",
+    "project_id": "weatherapplication-f7ad1",
+    "storage_bucket": "weatherapplication-f7ad1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980245100638:android:00229782cecab598",
+        "android_client_info": {
+          "package_name": "com.stetal.weatherassignment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980245100638-jt8mindnkoei55c8ink0njsthd4qj4fl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stetal.weatherassignment",
+            "certificate_hash": "eca3798723f7b11bc85a1a3d49bbeba922d004ce"
+          }
+        },
+        {
+          "client_id": "980245100638-8ec958sbdcgrlrdar5019gqr23u6t1h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUhLnAK78HfIKbjp5Kbce69bpuhVqKO_8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980245100638-8ec958sbdcgrlrdar5019gqr23u6t1h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

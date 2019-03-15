@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Location">
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_text_preference_1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="To show weather for your current location, grant access"
+            android:title="Current Location" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Forecast">
+
+        <ListPreference
+            android:defaultValue="Celsius"
+            android:entries="@array/list_preference_entries"
+            android:entryValues="@array/list_preference_entries"
+            android:key="pref_temperature_measure"
+            android:summary="Celsius"
+            android:title="Temperature" />
+
+        <ListPreference
+            android:defaultValue="Miles per Hour"
+            android:entries="@array/list_preference_wind_speed"
+            android:entryValues="@array/list_preference_wind_speed"
+            android:key="pref_wind_speed_measure"
+            android:title="Wind Speed" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_uv_level"
+            android:summary="When moderate or above, except at night"
+            android:title="Show UV Level" />
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Analytics">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_analytics"
+            android:summary="Allow anonymous usage statistics"
+            android:title="Analytics" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="About the app">
+        <Preference
+            android:title="About"
+            android:key="aboutPreference"
+            android:summary="Learn more about this app."
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>
