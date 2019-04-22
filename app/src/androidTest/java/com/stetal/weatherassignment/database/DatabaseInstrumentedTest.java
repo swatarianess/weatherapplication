@@ -22,8 +22,8 @@ import static org.junit.Assert.assertNotEquals;
 public class DatabaseInstrumentedTest {
 
     private SqliteDatabase mDataSource;
-    private FavouriteCitySchema ams = new FavouriteCitySchema( "Amsterdam", "Netherlands", 1500555555L);
-    private FavouriteCitySchema tok = new FavouriteCitySchema( "Tokyo", "Japan", 1500555555L);
+    private FavouriteCitySchema ams = new FavouriteCitySchema( 1, "Amsterdam", "Netherlands", 1500555555L);
+    private FavouriteCitySchema tok = new FavouriteCitySchema(2,  "Tokyo", "Japan", 1500555555L);
 
     @Before
     public void setUp(){
@@ -42,7 +42,7 @@ public class DatabaseInstrumentedTest {
 
     @Test
     public void insertCity() {
-        mDataSource.insertCity(new FavouriteCitySchema("Tokyo", "Japan", SystemClock.currentThreadTimeMillis()));
+        mDataSource.insertCity(new FavouriteCitySchema(2, "Tokyo", "Japan", SystemClock.currentThreadTimeMillis()));
         System.out.println("mDataSource.getTableRowCount() = " + mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
         assertNotEquals(0,mDataSource.getTableRowCount(FavouriteCitySchema.TABLE_NAME));
     }

@@ -195,11 +195,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.app_current_location) {
             SqliteDatabase dbh = new SqliteDatabase(this);
 
-            //Todo: Remove inserting to db in next iteration
-//            for (Pair<String, String> p : cityDummyData) {
-//                dbh.insertCity(new FavouriteCitySchema(p.first, p.second, currentTime));
-//            }
-
             //Insert cities
             dbh.insertCity(new FavouriteCitySchema(2759794, "Amsterdam", "Netherlands", currentTime));
             dbh.insertCity(new FavouriteCitySchema(2950159, "Berlin", "Germany", currentTime));

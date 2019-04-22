@@ -49,10 +49,6 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
         holder.cityNameTextView.setText(String.format("%s, %s",item.getName(),item.getCountry()));
         holder.lastUpdatedTextView.setText(String.format("Updated: %s", DateUtils.getRelativeTimeSpanString(expiry)));
 
-//        String hexWeatherIcon = "&#xf022;".replace("&#x","").replace(";","");
-//        long valLong = Long.parseLong(hexWeatherIcon,16);
-//        holder.weatherIconTextView.setText(String.valueOf((char) valLong));
-
         holder.mainLayout.setOnClickListener(view -> {
             Context context = view.getContext();
             Intent intent = new Intent(context, WeatherForecastActivity.class);
