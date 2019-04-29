@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
 
-class Coord {
+public class Coord {
 
     @SerializedName("lon")
     private double lon;

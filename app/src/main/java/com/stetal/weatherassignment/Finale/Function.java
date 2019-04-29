@@ -14,17 +14,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * @author steve & tal
- * @version 0.0.1
- * @since 09/03/2018
- */
 public class Function {
+
+    private static final String LOG_TAG = "JSON_RETRIEVAL_FUNCTION";
 
     private static final String OPEN_WEATHER_MAP_URL =
             "http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric";
 
-    private static final String OPEN_WEATHER_MAP_API = "ccda926182a87ffb5ba759cacd9c0f43";
+//    private static final String OPEN_WEATHER_MAP_API = "ccda926182a87ffb5ba759cacd9c0f43";
+    private static final String OPEN_WEATHER_MAP_API = "84a5de1e04e1d6eb4711bb49143f467d";
 
     public static String setWeatherIcon(int actualId, long sunrise, long sunset) {
         int id = actualId / 100;
@@ -111,7 +109,7 @@ public class Function {
 
                 }
             } catch (JSONException e) {
-                //Log.e(LOG_TAG, "Cannot process JSON results", e);
+                Log.e(LOG_TAG, "Cannot process JSON results", e);
             }
 
 

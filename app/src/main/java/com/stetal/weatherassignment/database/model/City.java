@@ -22,6 +22,19 @@ public class City {
         this.name = json.optString("name");
     }
 
+    /**
+     * @param cityID The city ID
+     * @param country The country of the city
+     * @param coord The location coord of the city
+     * @param name The name of the city
+     */
+    public City(double cityID, String country, Coord coord, String name){
+        this.id = cityID;
+        this.country = country;
+        this.coord = coord;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return String.format(Locale.getDefault(), "%s, %s", name, country);

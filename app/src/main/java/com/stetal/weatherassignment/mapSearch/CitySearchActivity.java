@@ -33,7 +33,6 @@ import com.stetal.weatherassignment.database.SqliteDatabase;
 import com.stetal.weatherassignment.database.model.City;
 import com.stetal.weatherassignment.database.model.FavouriteCitySchema;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
     private static final String TAG = "CitySearchActivity";
     SqliteDatabase mDataSource;
 
-    private List<FavouriteCitySchema> citySchemaList = new ArrayList<>();
+    private List<FavouriteCitySchema> citySchemaList;
 
     private AutoCompleteTextView acSearchTextView;
 
@@ -61,13 +60,11 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        setContentView(R.layout.activity_city_search);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        citySchemaList = new ArrayList<>();
 
-//        citySchemaList.addAll(mDataSource.getAllSavedCities());
+        setContentView(R.layout.activity_city_search);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         acSearchTextView = findViewById(R.id.autoCompleteCityTextView);
         acSearchTextView.setEnabled(false);
@@ -79,6 +76,7 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
 
             City selected = (City) aView.getAdapter().getItem(pos);
+
             Log.i(TAG, "selected: " + selected);
             LatLng selectedCityLocation = new LatLng(selected.getLatitude(), selected.getLongitude());
 
@@ -86,15 +84,11 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedCityLocation, DEFAULT_ZOOM));
             mDataSource.insertCity(new FavouriteCitySchema((long) selected.getId(), selected.getName(), selected.getCountry(), Calendar.getInstance().getTime().getTime()));
 
-            JSONObject cityForecasts = RemoteFetch.getJSON(this, (long) selected.getId());
+            JSONObject cityForecasts = RemoteFetch.getJSON(getApplicationContext(), (int) selected.getId());
 
             Log.i(TAG, "onCreate: " + (cityForecasts != null ? cityForecasts.toString() : null));
 
-            try {
-                mDataSource.addForecast(RemoteFetch.parseForecasts(cityForecasts,selected));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            mDataSource.addForecast(RemoteFetch.parseForecasts(cityForecasts, selected));
         });
 
     }
@@ -126,6 +120,7 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
         h.post(() -> {
             SuggestionAdapter suggestionAdapter = new SuggestionAdapter(this);
             acSearchTextView.setAdapter(suggestionAdapter);
+
         });
         acSearchTextView.setEnabled(true);
 
@@ -216,7 +211,6 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -253,5 +247,6 @@ public class CitySearchActivity extends FragmentActivity implements OnMapReadyCa
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
 
 }

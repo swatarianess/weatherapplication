@@ -67,11 +67,6 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
 
     }
 
-    public void removeItem(int position) {
-        myList.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @Override
     public int getItemCount() {
         return myList.size();

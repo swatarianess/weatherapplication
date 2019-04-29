@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity
             }
 
             Log.i("currentTime: ", String.valueOf(currentTime));
-
             Log.i("Saved Cities: ", dbh.getAllSavedCities().toString());
             Toast.makeText(this, "Added Dummy Information\n Swipe to refresh list!", Toast.LENGTH_SHORT).show();
 
@@ -250,6 +249,9 @@ public class MainActivity extends AppCompatActivity
         mRecyclerAdapter.notifyData((ArrayList<FavouriteCitySchema>) mDataSource.getAllSavedCities());
     }
 
+    /**
+     * @return Returns list of dummy data for cities and their forecasts
+     */
     private List<ForecastSchema> populateForecasts() {
         ArrayList<ForecastSchema> forecastSchemasList = new ArrayList<>();
         long currentTime = Calendar.getInstance().getTime().getTime();

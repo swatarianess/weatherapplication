@@ -98,5 +98,5 @@
     <string name="saved_cities">Saved Cities</string>
     <string name="title_activity_city_search">Add City</string>
     <string name="search_city">Search City</string>
-    <string name="open_weather_maps_app_id" translatable="false">ccda926182a87ffb5ba759cacd9c0f43</string>
+    <string name="open_weather_maps_app_id" translatable="false">84a5de1e04e1d6eb4711bb49143f467d</string>
 </resources>

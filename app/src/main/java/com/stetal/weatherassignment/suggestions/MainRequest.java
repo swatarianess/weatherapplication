@@ -20,8 +20,8 @@ public class MainRequest {
 
     private final static String TAG = "MainRequest";
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private static String urlRequest = "https://search-suggestions-3b32iesczvnfcxlwjjjy7r3y5u.eu-west-2.es.amazonaws.com/name/_search?q=";
+//    private static String urlRequest = "https://search-suggestions-3b32iesczvnfcxlwjjjy7r3y5u.eu-west-2.es.amazonaws.com/name/_search?q=";
+    private static String urlRequest = "https://search-search-suggestion-wrmtcju6gp2p6ir6j4grun4qtm.eu-west-2.es.amazonaws.com/cities/_search?q=";
 
     /**
      * @param myURL The url to create a url connection to
@@ -40,15 +40,15 @@ public class MainRequest {
                 in = new InputStreamReader(urlConn.getInputStream(),
                         Charset.defaultCharset());
                 BufferedReader bufferedReader = new BufferedReader(in);
-                if (bufferedReader != null) {
-                    int cp;
-                    while ((cp = bufferedReader.read()) != -1) {
-                        sb.append((char) cp);
-                    }
-                    bufferedReader.close();
+                int cp;
+                while ((cp = bufferedReader.read()) != -1) {
+                    sb.append((char) cp);
                 }
+                bufferedReader.close();
             }
-            in.close();
+            if (in != null) {
+                in.close();
+            }
         } catch (Exception e) {
             throw new RuntimeException("Exception while calling URL:" + myURL, e);
         }

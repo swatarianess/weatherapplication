@@ -296,7 +296,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             builder.setTitle("About");
             builder.setIcon(R.drawable.ic_info_black_24dp);
-            builder.setMessage("This app was created by Tal and Stephen");
+            builder.setMessage("This app was created by Nikki");
             builder.setCancelable(true);
             return builder.create();
         }

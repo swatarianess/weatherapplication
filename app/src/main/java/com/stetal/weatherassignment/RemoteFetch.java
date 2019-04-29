@@ -24,17 +24,16 @@ public class RemoteFetch {
     private static final String TAG = "RemoteFetch";
 
 
-    public static JSONObject getJSON(Context context, long cityID) {
+    public static JSONObject getJSON(Context context, int cityID) {
         try {
-            URL url = new URL(OPEN_WEATHER_MAP_FORECAST + (int) cityID);
+            String api_key = context.getString(R.string.open_weather_maps_app_id);
+            URL url = new URL(OPEN_WEATHER_MAP_FORECAST + cityID + "&APPID=" + api_key);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.addRequestProperty("x-api-key", context.getString(R.string.open_weather_maps_app_id));
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connection.getInputStream()));
 
-            StringBuffer json = new StringBuffer(1024);
+            StringBuilder json = new StringBuilder(1024);
             String tmp;
             while ((tmp = reader.readLine()) != null)
                 json.append(tmp).append("\n");
@@ -44,19 +43,21 @@ public class RemoteFetch {
 
             // This value will be 404 if the request was not
             // successful
-            if (data.getInt("cod") != 200) {
+            if (!data.getString("cod").equals("200")) {
                 return null;
             }
 
             return data;
         } catch (Exception e) {
+            Log.e(TAG, "getJSON: ", e);
             return null;
         }
     }
 
-    public static List<ForecastSchema> parseForecasts(JSONObject job, City c) throws JSONException {
+    public static List<ForecastSchema> parseForecasts(JSONObject job, City c) {
         List<ForecastSchema> result = new ArrayList<>();
 
+        try {
         JSONArray weatherList = job.getJSONArray("list");
         for (int i = 0; i < weatherList.length(); i++) {
             JSONObject target = weatherList.getJSONObject(i);
@@ -72,6 +73,9 @@ public class RemoteFetch {
             String iconText = targetWeather.getString("icon");
 
             result.add(new ForecastSchema((long) c.getId(), c.getName(), weatherDescription, temperature, humidity, pressure, iconText, dateTime));
+        }
+        } catch (JSONException e){
+            e.printStackTrace();
         }
         Log.i(TAG, "parseForecasts: " + result.size());
         return result;
